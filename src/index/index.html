@@ -193,9 +193,9 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <a class="panel-title collapsed" data-toggle="collapse" data-parent="#panels-1"
-                        href="#panel-element-1">官方教程</a>
+                        href="#panel-element-MAIN-1">官方教程</a>
                 </div>
-                <div id="panel-element-1" class="panel-collapse collapse">
+                <div id="panel-element-MAIN-1" class="panel-collapse collapse">
                     <div class="panel-body">
                         <div class="row clearfix">
                             <div class="col-md-12 column">
@@ -2251,7 +2251,2073 @@ init()
                 </div>
             </div>
         </div>
-    </div>
+        <div class="panel-group" id="panels-1">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <a class="panel-title collapsed" data-toggle="collapse" data-parent="#panels-1"
+                        href="#panel-element-MAIN-2">模板代码</a>
+                </div>
+                <div id="panel-element-MAIN-2" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        <blockquote>
+                            <h2>模板代码</h2>
+                        </blockquote>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <a class="panel-title collapsed" data-toggle="collapse" data-parent="#panel-586155"
+                                    href="#panel-element1-1">打字机</a>
+                            </div>
+                            <div id="panel-element1-1" class="panel-collapse collapse">
+                                <div id="cnblogs_post_body" class="blogpost-body cnblogs-markdown">
+                                    <pre>
+            <code class="language-js">
+                /**
+ * !info {Project} -来自网络
+ * 打字机.js
+ */
+
+
+world.onVoxelContact(({ x, y, z, voxel }) => {
+    const voxelName = voxels.name(voxel);
+    if (voxelName === 'rock') {
+        voxels.setVoxel(46, 11, 52, 'lantern_02');
+    }
+});
+
+async function change() {
+    while (true) {
+        voxels.setVoxel(157, 43, 60, 'grass')
+        voxels.setVoxel(157, 43, 61, 'grass')
+        voxels.setVoxel(157, 43, 62, 'grass')
+        voxels.setVoxel(157, 43, 63, 'grass')
+        await sleep(5000)
+        voxels.setVoxel(157, 43, 60, 'lantern_01')
+        voxels.setVoxel(157, 43, 61, 'lantern_01')
+        voxels.setVoxel(157, 43, 62, 'lantern_01')
+        voxels.setVoxel(157, 43, 63, 'lantern_01')
+        await sleep(5000)
+    }
+}change();
+
+console.clear()
+
+/**
+ * 字符形状对应的方块点位
+ * 值为1，则显示方块
+ * 值为0，则不显示方块
+ * 以此来拼凑出字符的形状
+ */
+const charMap = {
+    '0': [
+        [1, 1, 1],
+        [1, 0, 1],
+        [1, 0, 1],
+        [1, 0, 1],
+        [1, 1, 1],
+    ],
+    '1': [
+        [0, 1, 0],
+        [0, 1, 0],
+        [0, 1, 0],
+        [0, 1, 0],
+        [0, 1, 0],
+    ],
+    '2': [
+        [1, 1, 1],
+        [0, 0, 1],
+        [1, 1, 1],
+        [1, 0, 0],
+        [1, 1, 1],
+    ],
+    '3': [
+        [1, 1, 1],
+        [0, 0, 1],
+        [1, 1, 1],
+        [0, 0, 1],
+        [1, 1, 1],
+    ],
+    '4': [
+        [1, 0, 1],
+        [1, 0, 1],
+        [1, 1, 1],
+        [0, 0, 1],
+        [0, 0, 1],
+    ],
+    '5': [
+        [1, 1, 1],
+        [1, 0, 0],
+        [1, 1, 1],
+        [0, 0, 1],
+        [1, 1, 1],
+    ],
+    '6': [
+        [1, 1, 1],
+        [1, 0, 0],
+        [1, 1, 1],
+        [1, 0, 1],
+        [1, 1, 1],
+    ],
+    '7': [
+        [1, 1, 1],
+        [0, 0, 1],
+        [0, 0, 1],
+        [0, 0, 1],
+        [0, 0, 1],
+    ],
+    '8': [
+        [1, 1, 1],
+        [1, 0, 1],
+        [1, 1, 1],
+        [1, 0, 1],
+        [1, 1, 1],
+    ],
+    '9': [
+        [1, 1, 1],
+        [1, 0, 1],
+        [1, 1, 1],
+        [0, 0, 1],
+        [1, 1, 1],
+    ],
+    ':': [
+        [0, 0, 0],
+        [0, 1, 0],
+        [0, 0, 0],
+        [0, 1, 0],
+        [0, 0, 0],
+    ],
+}
+
+/**
+ * 渲染一个字符
+ * @parame char 需渲染的字符
+ * @parame position 字符左上角位置
+ */
+function renderOneChar(char, position) {
+    // 获取字符对应的方块点位，点位数据为二维数组
+    const charData = charMap[char]
+    // 遍历点位二维数组
+    for (let i = 0; i < charData.length; i++) {
+        const row = charData[i]
+        // 遍历点位第i行
+        for (let j = 0; j < row.length; j++) {
+            const value = row[j]
+            // 每一行方块的x坐标，随着列数增加而增加
+            const x = position.x + j
+            // 每一行方块的y坐标，随着行数增加而降低
+            const y = position.y - i
+            // 每一行方块的z坐标相同
+            const z = position.z
+            if (value == 0) {
+                // 值为0，则不显示方块
+                voxels.setVoxelId(x, y, z, 0)
+            } else {
+                voxels.setVoxel(x, y, z, 'red_light')
+            }
+        }
+    }
+}
+
+/**------测试 renderOneChar 函数-------- */
+renderOneChar('2', new Box3Vector3(20, 20, 20))
+/**------测试 renderOneChar 函数-------- */
+
+
+/**
+ * 渲染一个字符串
+ * @parame str 需渲染的字符串
+ * @parame position 字符串第一个字符的左上角位置
+ */
+function renderString(str, position) {
+    // 遍历每个字符，依次渲染
+    for (let i = 0; i < str.length; i++) {
+        // 观察charMap可知每个字符占用宽度为3，再加上字符间应有间距,因此每个字符的x要相距4
+        const pos = position.add(new Box3Vector3(4 * i, 0, 0))
+        renderOneChar(str[i], pos)
+    }
+}
+
+/**------测试 renderString 函数-------- */
+renderString('22', new Box3Vector3(35, 20, 20))
+/**------测试 renderString 函数-------- */
+
+
+
+/** 获取符合00：00格式的字符串 */
+function getTimeStr(time) {
+    if (time > 0) {
+        if (time >= 10) {
+            t = time
+        } else {
+            // 小于10时，前面补一个0
+            t = '0' + time
+        }
+    } else {
+        // 等于0时，用两个0代替
+        t = '00'
+    }
+    return t
+}
+
+/**
+ * 开始倒计时
+ * @parame totalTime  总计时（单位：秒）
+ * @parame position 倒计时的左上角位置
+ */
+async function startCountDown(totalTime, position) {
+    let time = totalTime
+    // 每隔1秒判断一次，直到时间减为0
+    while (time >= 0) {
+        // 获得分钟数
+        const minute = Math.floor(time / 60)
+        // 获得秒数
+        const second = time % 60
+        // 转化为符合规则的字符串
+        const minuteStr = getTimeStr(minute)
+        // 转化为符合规则的字符串
+        const secondStr = getTimeStr(second)
+        // 用":"拼凑出时间字符串
+        const timeStr = minuteStr + ':' + secondStr
+        // 渲染出时间字符串
+        renderString(timeStr, position)
+        // 每隔1秒 时间变量减一
+        await sleep(1000)
+        time--
+    }
+}
+
+/**------测试 startCountDown 函数------- */
+// 总倒计时 72秒
+const totalTime = 72
+// 倒计时的左上角位置
+const position = new Box3Vector3(55, 20, 20)
+startCountDown(totalTime, position)
+/**------测试 startCountDown 函数------- */
+
+
+startCountDown(120, 5, 136)// 坐标，详细自行调整
+async function BOOM() {
+    world.sunPhase = 0.8
+    const Quat = new Box3Quaternion(0, 0, 0, 1) //默认的旋转状态
+    const RED = new Box3RGBColor(0.5, 0, 0) //发光的红色
+    await sleep(3000)
+    world.say("聚变打击即将来袭！")
+    const boom = world.createEntity({
+        mesh: 'mesh/核弹.vb',
+        meshScale: [1 / 2, 1 / 2, 1 / 2],
+        position: [100, 50, 18],
+        particleRate: 80, //每秒发出80个粒子
+        particleLifetime: 2, //每个粒子存活2秒
+        particleColor: [RED, RED, RED, RED, RED], //粒子在5个阶段的颜色都是红色
+        particleSize: [10, 10, 10, 10, 10], //粒子在5个阶段的大小都是2
+        gravity: false,
+    })
+    boom.meshOrientation = Quat.rotateY(Math.PI / -2)
+    await sleep(5000)
+    world.say("核弹即将发射")
+    await sleep(3000)
+    world.say("倒计时:")
+    await sleep(1000)
+    boom.meshEmissive = 0.3
+    world.say("5")
+    await sleep(1000)
+    boom.meshEmissive = 0
+    world.say("4")
+    await sleep(1000)
+    boom.meshEmissive = 0.3
+    world.say("3")
+    await sleep(1000)
+    boom.meshEmissive = 0
+    world.say("2")
+    await sleep(1000)
+    boom.meshEmissive = 0.3
+    world.say("1")
+    for (let i = 0; i < 100; i++) {
+        await sleep(50)
+        boom.position.x -= 1
+    }
+    world.say("BOOM！")
+    boom.destroy()
+    world.sunPhase = 0.25
+    await sleep(3000)
+    world.say("注意持续辐射伤害！！！")
+    world.querySelectorAll("player").forEach(async (e) => {
+        while (e.hp > 0) {
+            await sleep(1000)
+            e.hp -= 1
+            console.log(e.hp)
+        }
+    })
+}
+async function killBox(pos, size, fn) {
+    const entities = world.searchBox({
+        lo: [pos.x - size, pos.y - size, pos.z - size],
+        hi: [pos.x + size, pos.y + size, pos.z + size],
+    })
+    for (const e of entities) {
+        e.hurt(5)
+        fn(e)
+    }
+}
+async function makeDamage(e, dmg, color) {
+    //e.meshcolor.copy(color)
+    await sleep(500)
+    //e.meshcolor.set(1,1,1)
+}
+
+const mscale = 1 / 16
+const Quat = new Box3Quaternion(0, 0, 0, 1)
+
+function buddyFollow(entity, mesh, y) {
+    const buddy = world.createEntity({
+        mesh,
+        position: entity.position,
+        meshScale: [mscale, mscale, mscale],
+        gravity: false, //不受重力影响
+        fixed: false, //可推移
+        collides: false, //可碰撞
+        friction: 0, //无摩擦力
+        mass: 0.01, //非常轻
+    })
+
+    const tgPos = entity.position//僚机的目标位置
+    const budPos = buddy.position//僚机的当前位置
+    const facing = entity.player.facingDirection//玩家的朝向
+    const ratio = 0.3//追随的灵敏度, 最好设在0.5左右, 1.0表示立即移到玩家位置
+
+    const dist = 2 //与玩家保持的距离
+    const yOffset = y //y轴位移, 保持僚机在头顶或脚下
+
+    const ticker = world.onTick(() => {
+
+        //要让小精灵跟在玩家背后, 需要计算xz轴的位移: 玩家朝向的反方向
+        const xOffset = -facing.x * dist
+        const zOffset = -facing.z * dist
+
+        //当前位置与目标位置在xyz轴的差距
+        const xDiff = tgPos.x - budPos.x
+        const yDiff = tgPos.y - budPos.y
+        const zDiff = tgPos.z - budPos.z
+
+        //计算xyz方向上 当前位置向目标位置靠拢的速度
+        const vx = (xDiff + xOffset) * ratio
+        const vy = (yDiff + yOffset) * ratio
+        const vz = (zDiff + zOffset) * ratio
+
+        buddy.velocity.set(vx, vy, vz)//设置僚机速度
+
+        if (buddy.velocity.sqrMag() > 0.005) {//速度要足够大, 才触发转向, 防止抖动
+            buddy.meshOrientation = Quat.rotateY(Math.atan2(zDiff, xDiff)) //让小精灵一直面向玩家
+        }
+    })
+
+    return () => {
+        ticker.cancel() //关掉tick循环
+        buddy.destroy() //移除僚机实体
+    }
+}
+
+world.onPlayerJoin(({ entity }) => {
+    entity.setPet = buddyFollow(entity, 'mesh/万圣南瓜.vb', -1) //给玩家增加宠物，名称需与地图内放置的模型的名称一致
+})
+
+world.onPlayerLeave(({ entity }) => {
+    //玩家离开地图时, 切记一定要关掉tick循环以及销毁小精灵实体, 否则随着人数增加, 服务器积累到一定程度就会崩溃
+    entity.setPet() //清除掉宠物
+})
+
+
+
+
+//require('./script_2.js')
+
+
+
+
+console.clear()//清除控制台记录
+const hd = world.querySelector('#万圣节告示牌');
+hd.enableInteract = true;
+hd.interactHint = '万圣节告示牌';
+hd.interactRadius = 6;
+hd.onInteract(async ({ entity }) => {
+    const hdz = [1];
+
+    const hdl = await entity.player.dialog({
+        type: Box3DialogType.SELECT,
+        title: '万圣节告示牌',
+        content: `你好，${entity.player.name}，很高兴认识你。目前版本——v.3 核对好版本游玩体验最佳哦~`,
+        options: hdz
+    })
+    if (!hdl || hdl == null || hdl.value == '') return;
+    for (const a of hdxm) {
+        if (a.name == hdl.value) {
+            a.dialog(entity);
+            break;
+        }
+    }
+})
+
+world.querySelectorAll('.test').forEach((e) => {
+    var type = 'r';
+    world.onTick(() => {
+        if (e.position.z >= 11) {
+            e.position.z -= 0.3;
+            type = 'l';
+        } else if (e.position.z <= 6) {
+            e.position.z += 0.3;
+            type = 'r';
+        } else {
+            if (type === 'r') {
+                e.position.z += 0.3;
+            } else {
+                e.position.z -= 0.3;
+            }
+        }
+    })
+})
+world.onPlayerJoin(({ entity }) => {
+    entity.player.addWearable({
+        bodyPart: Box3BodyPart.TORSO,
+        mesh: 'mesh/.vb',
+        orientation: new Box3Quaternion(0, 1, 0, 0).rotateY(Math.PI / 2),
+        scale: new Box3Vector3(1, 1, 1),
+        offset: new Box3Vector3(0, 0, -0.45),
+    });
+});
+world.onPlayerJoin(({ entity }) => {
+    entity.player.addWearable({
+        bodyPart: Box3BodyPart.TORSO,
+        mesh: 'mesh/.vb',
+        orientation: new Box3Quaternion(0, 1, 0, 0).rotateY(Math.PI / 2),
+        scale: new Box3Vector3(0.5, 0.5, 0.5),
+        offset: new Box3Vector3(0, 0, -0.45),
+    });
+});
+world.onPlayerJoin(({ entity }) => {
+    entity.player.addWearable({
+        bodyPart: Box3BodyPart.HEAD,
+        mesh: 'mesh/万圣节女巫帽.vb',            //使用代码时，此处的名称需与地图中的模型名称保持一致
+        orientation: new Box3Quaternion(0, 0, 0, 0).rotateY(-Math.PI / 1),
+        offset: new Box3Vector3(0, 1.5, 0),
+    });
+
+});
+
+
+
+for (const npc of world.querySelectorAll('.NPC')) {
+    npc.enableInteract = true
+    npc.interactRadius = 4.5
+    npc.interactHint = npc.id
+    npc.interactColor.set(0, 1, 0)
+    if (npc.id == '吉吉喵的分身') {
+        npc.onInteract(async ({ entity }) => {
+            textDialog(entity, `${entity.player.name}, 恭喜你完成了跑酷的第一季后面还会更新的1赞更新1关20赞更新1期50赞更新一季~其实作者已经更新第二季了想去的话就从我后面的传送门去吧`, npc.id)
+        })
+    }
+    else if (npc.id == '克苏鲁之眼') {
+        npc.onInteract(async ({ entity }) => {
+            textDialog(entity, `哈哈${entity.player.name}我是克苏鲁遗留下的的精神部分，废话不用多说，偷偷告诉你一个方法，可以让这个地图崩溃，就是有10000人一起进来就能让这个地图崩溃了，哈哈哈哈哈哈哈哈哈呵呵哈哈哈哈哈哈哈哈哈呵呵哈哈哈哈哈哈哈哈哈~`, npc.id)
+        })
+    }
+    else if (npc.id == '奥特曼-泽塔') {
+        npc.onInteract(async ({ entity }) => {
+            textDialog(entity, `你好${entity.player.name}我是泽塔奥特曼，最近光之国的奥特之父告诉我这里有怪物的脑电波，好像是怪物克苏鲁，你看见了吗？，如果看见了`, npc.id)
+        })
+    }
+}
+for (const npc of world.querySelectorAll('.密钥门')) {
+    npc.enableInteract = true
+    npc.interactRadius = 4
+    npc.interactHint = npc.id
+    if (npc.id == '密钥门') {
+        npc.onInteract(async ({ entity }) => {
+            const mm = await entity.player.dialog({
+                type: Box3DialogType.INPUT,
+                content: '请输入密钥：',
+                title: npc.id
+            })
+            if (mm == '密码') {
+                entity.player.directMessage(`密钥正确！请进`)
+                entity.position.set(207.88, 11.76, 103.50)
+            }
+            else {
+                entity.player.directMessage(`密钥错误！被认为入侵者，扣10滴血！`)
+                entity.hurt(10)
+            }
+        })
+    }
+}
+for (const e of world.querySelectorAll('*')) {//遍历所有实体
+    if (e.id.startsWith('存档点')) {
+        e.collides = true //开启碰撞
+        e.fixed = true //固定实体不被推移
+        e.meshScale = e.meshScale.scale(2) //放大零倍
+        e.onEntityContact(({ other }) => {
+            if (other.isPlayer) {
+                if (e.position !== other.player.spawnPoint) {
+                    other.player.directMessage('到达新的存档点')
+                    other.player.spawnPoint = e.position // 玩家重生点坐标设置成存档点的坐标
+                }
+            }
+        })
+    }
+}
+world.onPlayerJoin(({ entity }) => {
+    entity.onFluidEnter(() => {//当玩家掉到水里
+        entity.position.copy(entity.player.spawnPoint)
+        entity.position.y += 4
+    })
+})
+world.onVoxelContact(({ entity, x, y, z, voxel }) => {
+    const voxelName = voxels.name(voxel);
+    if (voxelName === 'windygrass') {
+        voxels.setVoxel(x, y, z, 'air');
+        setTimeout(() => { voxels.setVoxel(x, y, z, voxel) }, 3000);
+    } else if (voxelName === '') {
+        voxels.setVoxel(x, y, z, 0);
+    }
+});
+
+world.onPlayerJoin(({ entity }) => {
+    entity.onFluidEnter(() => {//当玩家掉到水里
+        entity.position.copy(entity.player.spawnPoint)
+        entity.position.y += 4
+    })
+})
+console.clear()
+var door = world.querySelector('#传送门')
+door.enableInteract = true
+door.interactRadius = 5
+door.interactHint = '传送到下一关～'
+
+door.onInteract(({ entity }) => {
+    entity.position.set(151, 12, 20)
+})
+console.clear()
+
+console.clear()
+var door = world.querySelector('#未来传送门-4')
+door.enableInteract = true
+door.interactRadius = 5
+door.interactHint = '传送到出生点'
+
+door.onInteract(({ entity }) => {
+    entity.position.set(250, 13, 3)
+})
+var door = world.querySelector('#未来传送门-1')
+door.enableInteract = true
+door.interactRadius = 5
+door.interactHint = '传送到下一关'
+
+door.onInteract(({ entity }) => {
+    entity.position.set(60, 10, 1)
+})
+var door = world.querySelector('#未来传送门-5')
+door.enableInteract = true
+door.interactRadius = 5
+door.interactHint = '传送到挂机室'
+
+door.onInteract(({ entity }) => {
+    entity.position.set(126, 53, 130)
+})
+            </code>
+                                                </pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <a class="panel-title collapsed" data-toggle="collapse" data-parent="#panel-586155"
+                                    href="#panel-element1-2">带堆叠的背包</a>
+                            </div>
+                            <div id="panel-element1-2" class="panel-collapse collapse">
+                                <div id="cnblogs_post_body" class="blogpost-body cnblogs-markdown">
+                                    <pre>
+            <code class="language-js">
+                /**
+ * !info {Project} -来自Nomen
+ * 带堆叠上限的背包系统（？
+ */
+
+
+
+const topBag = 64;//物品堆叠上限，默认64
+
+
+world.onPlayerJoin(async ({ entity }) => {
+    entity.bag = [];
+    Object.assign(entity, {
+        give: function (name, count) {
+            if (count > topBag) return;//检测输入是否大于背包最大堆叠
+            if (name === undefined || count === undefined) return;//检测信息是否完全，防止报错
+            var prop = [];
+            for (let i in this.bag) { if (this.bag[i].name == name) prop.push(parseInt(i)); }//抽取所有此物品的项目
+            if (prop.length == 0) { this.bag.push({ name, count }); return; }//如果不存在项目，则直接推入物品
+            if ((this.bag[prop[prop.length - 1]].count + count) > topBag) {//如果存在该项目但是剩余空间不足
+                if (this.bag[prop[prop.length - 1]].count == topBag) { this.bag.push({ name, count }); return; }
+                let c = this.bag[prop[prop.length - 1]].count
+                this.bag[prop[prop.length - 1]].count = topBag;//补全当前项目
+                this.bag.push({ name, count: count - (topBag - c) })//将多余最高堆叠的项目推入背包 topBag-(count-(this.bag[prop[prop.length-1]].count))  
+            } else {
+                this.bag[prop[prop.length - 1]].count += count//否则直接推入项目
+            }
+        },
+        show: function () {
+            this.bag.forEach((item) => {
+                console.log(item.name, ":", item.count)
+            })
+        },
+        remove: function (name, count) {
+            if (name === undefined || count === undefined) return;//检测信息是否完全，防止报错
+            var prop = [];
+            for (let i in this.bag) { if (this.bag[i].name == name) prop.push(parseInt(i)); }//抽取所有此物品的项目
+            var allCount = 0;
+            prop.forEach((elei) => { allCount += this.bag[elei].count; })
+            if (allCount < count) return false;
+            for (let i = prop.length-1;i>=0;i--) {
+                if (this.bag[prop[(i)]].count >= count) {
+                    this.bag[prop[(i)]].count -= count;
+                    if (this.bag[prop[(i)]].count == 0) this.bag.splice(prop[i], 1);
+                    console.warn(this.bag[prop[(i)]].count)
+                    return true;
+                } else {
+                    count -= this.bag[prop[(i)]].count;
+                    this.bag.splice(prop[i], 1);
+                }
+            }
+        }
+    })
+})
+            </code>
+                                                </pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <a class="panel-title collapsed" data-toggle="collapse" data-parent="#panel-586155"
+                                    href="#panel-element1-3">摔落伤害</a>
+                            </div>
+                            <div id="panel-element1-3" class="panel-collapse collapse">
+                                <div id="cnblogs_post_body" class="blogpost-body cnblogs-markdown">
+                                    <pre>
+            <code class="language-js">
+                /**
+ * !info {Project} -来自网络
+ * 衰落伤害
+ */
+
+
+
+voxels.isFluid = (voxel) => { return ['water', 364, 'strawberry_juice', 412, 'lime_juice', 414, 'blueberry_juice', 416, 'lemon_juice', 418, 'grape_juice', 420, voxels.name(422), 422, voxels.name(424), 424, voxels.name(426), 426, voxels.name(428), 428, voxels.name(430), 430].includes(voxel) }
+var xzCo = 0.44921875
+var yCo = 1.6
+world.onPlayerJoin(async ({ entity }) => {
+    entity.enableDamage = true
+    entity.maxHp = 100
+    entity.hp = 100
+    const g = voxels.getVoxel
+    entity.fallHigh = 0
+    entity.highY = entity.position.y
+    entity.contactList = () => {
+        return [
+            g(entity.position.x + xzCo, entity.position.y - yCo, entity.position.z + xzCo),
+            g(entity.position.x + xzCo, entity.position.y - yCo, entity.position.z - xzCo),
+            g(entity.position.x - xzCo, entity.position.y - yCo, entity.position.z + xzCo),
+            g(entity.position.x - xzCo, entity.position.y - yCo, entity.position.z - xzCo),
+            g(entity.position.x + xzCo, entity.position.y - yCo, entity.position.z),
+            g(entity.position.x - xzCo, entity.position.y - yCo, entity.position.z),
+            g(entity.position.x, entity.position.y - yCo, entity.position.z + xzCo),
+            g(entity.position.x, entity.position.y - yCo, entity.position.z - xzCo),
+            g(entity.position.x, entity.position.y - yCo, entity.position.z)]
+    }
+    entity.ifContact = function () {
+        for (const count of entity.
+            contactList()) {
+            if (count != 0) {
+                if (voxels.isFluid(count)) {
+                    this.fallHigh = 0
+                    return false
+                } return true
+            }
+        } return false
+    }
+    while (entity) {
+        await sleep(64)
+        if (entity.ifContact()) {
+            if (voxels.isFluid(g(entity.position.x, entity.position.y - 1, entity.position.z))) continue
+            if (entity.fallHigh > 6) {
+                const hurt = entity.fallHigh / 3 * 18 * ~(world.gravity * 100) / 100
+                entity.hurt(hurt)
+                entity.player.directMessage(`你受到${hurt}点高空伤害`)
+                entity.fallHigh = 0
+            } else {
+                entity.fallHigh = 0
+            }
+        } if (entity.highY > Math.floor(entity.position.y)) {
+            entity.fallHigh += 1
+            entity.highY = Math.floor(entity.position.y)
+        } else {
+            entity.highY = Math.floor(entity.position.y)
+        }
+    }
+})
+world.onFluidEnter(({ entity }) => {
+    if (entity.isPlayer) entity.fallHigh = 0
+})
+            </code>
+                                                </pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <a class="panel-title collapsed" data-toggle="collapse" data-parent="#panel-586155"
+                                    href="#panel-element1-4">围棋</a>
+                            </div>
+                            <div id="panel-element1-4" class="panel-collapse collapse">
+                                <div id="cnblogs_post_body" class="blogpost-body cnblogs-markdown">
+                                    <pre>
+            <code class="language-js">
+                /**
+ * !info {Project} -来自网络
+ * 围棋
+ */
+
+
+console.clear();
+
+// 贴目
+const KOMI = 7.5;
+
+// 聊天命令
+const RESIGN_RE = /^我认输/i;
+const PASS_RE = /^过/i;
+const FINISH_COUNT_RE = /^清点完毕/i;
+const RESET_RE = /^重置/i;
+
+// 管理员
+const ADMIN_NAMES = ['吉吉喵', 'Gorikokka'];
+
+// 每秒多少tick
+const TICKS_PER_SECOND = (1024 / 64);
+// 基本时限
+const MAIN_TICKS = 10 * 60 * TICKS_PER_SECOND;
+// 基本时限用完后的读秒时间
+const LIGHTNING_TICKS = 10 * TICKS_PER_SECOND;
+
+// 是否允许自我对弈
+const ALLOW_SELF_PLAY = false;
+
+// 数字方块
+const DIGIT = [
+    'zero',
+    'one',
+    'two',
+    'three',
+    'four',
+    'five',
+    'six',
+    'seven',
+    'eight',
+    'nine',
+];
+
+// 棋盘方块
+const B = {
+    '+': voxels.id('board1'),
+    'T': voxels.id('board4'),
+    'L': voxels.id('board3'),
+    '.': voxels.id('board2'),
+}
+
+// 用户控制方块旋转
+const R = {
+    N: 0x8000,
+    S: 0,
+    E: 0xc000,
+    W: 0x4000,
+};
+
+// 棋子名称
+const COLORS = [
+    '黑',
+    '白',
+];
+
+// 正常棋子的mesh
+const STONE_MESH = [
+    world.querySelector('.black_stone').mesh,
+    world.querySelector('.white_stone').mesh,
+];
+
+// 标红棋子的mesh
+const CURRENT_STONE_MESH = [
+    world.querySelector('.cur_black_stone').mesh,
+    world.querySelector('.cur_white_stone').mesh,
+];
+
+// 碗的mesh
+const BOWL_MESH = [
+    world.querySelector('.black_bowl').mesh,
+    world.querySelector('.white_bowl').mesh,
+];
+
+// 按钮的mesh
+const CHOOSE_BUTTON_MESH = world.querySelector('.choose_button').mesh;
+
+const teleport = (function(/* 传送相关 */) {
+    const locations = {};
+    // 获取预置的地点
+    world.querySelectorAll('.地点').forEach((e) => {
+        locations[e.id] = e.position;
+        e.destroy();
+    });
+    // 处理绝对传送
+    world.onEntityContact(({entity, other}) => {
+        if (other.isPlayer && entity.hasTag('绝对传送')) {
+            const attr = getEntityAttr(entity);
+            const pos = locations[attr['目的地']];
+            if (pos) other.position.copy(pos);
+        }
+    });
+    // 处理相对传送
+    world.onEntityContact(({entity, other}) => {
+        if (other.isPlayer && entity.hasTag('相对传送')) {
+            const attr = getEntityAttr(entity);
+            other.position.addEq({
+                x: Number(attr.x) || 0,
+                y: Number(attr.y) || 0,
+                z: Number(attr.z) || 0,
+            });
+        }
+    });
+    return function(e, name) {
+        const pos = locations[name];
+        if (e && e.isPlayer && pos) e.position.copy(pos);
+    }
+})();
+
+// 创建游戏实例
+async function playGo (name, size, originX, originY, originZ) {
+    // 用于计算星点x的位置
+    const STAR_MOD = {
+        19: [6, 3],
+        13: [3, 0],
+        9: [2, 0],
+        7: [2, 0],
+    };
+    // 计时条长度
+    const CLOCK_LENGTH = size <= 9 ? 3 : 5;
+
+    // 棋盘大小, 默认19
+    if (!(size in STAR_MOD)) {
+        size = 19;
+    }
+
+    // 存储某个位置的棋子的实体对象
+    const pieces = new Array(size * size);
+    // 记录某个位置的棋子颜色. -1:空, 0:黑, 1:白
+    const board = new Array(size * size);
+    // 用于标记某个位置是否被访问过(用于搜索算法)
+    const visited = new Array(size * size);
+    // 存储所有棋盘状态, 用于判断全局同形
+    const prevBoards = [];
+    // 对弈双方玩家的实体
+    const playerEntities = [ null, null ];
+    // 对弈双方玩家的名称
+    const playerNames = ['NULL', 'NULL'];
+    // 双方的分数
+    const score = [ 0, 0 ];
+    // 双方的计时
+    const clock = [ 0, 0 ];
+    // 当前玩家 0:黑, 1:白
+    let currentPlayer = 0;
+    // 游戏状态 wiat:等待, play:对局中, end:结束
+    let gameState = 'wait';
+    // 记录连续过的次数, 达到两次时则结束对局
+    let passCount = 0;
+    // 上次落子的位置
+    let lastPieceIdx = -1;
+    // 记录该房间的玩家, 对局开始后会把非对局玩家传送到场外
+    const visitors = new Set();
+
+    // 用于发送通知
+    function broadcast(s) {
+        world.say(`[${name}]: ${s}`);
+    }
+
+    // 处理对局开始前离开的玩家
+    function leaveVisotor(e) {
+        teleport(e, `${name}观战室`);
+        for (let i = 0; i < 2; i++) {
+            if (playerEntities[i] == e) {
+                playerEntities[i] = null;
+                playerNames[i] = null;
+            }
+        }
+        visitors.delete(e);
+    }
+    // 玩家离开房间的处理
+    world.querySelector(`.${name}离开房间`).onEntityContact(({other}) => {
+        if (gameState === 'play') {
+            resign(other);
+        } else {
+            leaveVisotor(other);
+        }
+    });
+    // 触碰到入口, 直接传送到下方
+    world.querySelector(`.${name}入口`).onEntityContact(({other}) => {
+        if (gameState !== 'play') {
+            visitors.add(other);
+            other.position.y -= 5;
+        }
+    });
+    // 创建棋盘
+    function createBoard () {
+        const [MOD, VAL] =  STAR_MOD[size];
+        const border = voxels.id('palace_lamp');
+        const borderLight = voxels.id('lantern_02');
+        // 边缘上方的白灯
+        voxels.setVoxelId(originX - 1, originY + 1, originZ - 1, borderLight);
+        voxels.setVoxelId(originX + size, originY + 1, originZ - 1, borderLight);
+        voxels.setVoxelId(originX - 1, originY + 1, originZ + size, borderLight);
+        voxels.setVoxelId(originX + size, originY + 1, originZ + size, borderLight);
+        // 棋盘边缘的灯
+        for (let i = 0; i <= size; ++i) {
+            voxels.setVoxelId(originX + i, originY, originZ + size, border);
+            voxels.setVoxelId(originX + i - 1, originY, originZ - 1, border);
+            voxels.setVoxelId(originX + size, originY, originZ + i - 1, border);
+            voxels.setVoxelId(originX - 1, originY, originZ + i , border);
+        }
+        // 创建size * size的棋盘
+        for (let x = 0; x < size; ++x) {
+            for (let z = 0; z < size; ++z) {
+                // 通常来讲是交点
+                let p = B['+'];
+                // 以下四个判断用于判断是否是边角
+                if (x === 0 && z === 0) { 
+                    p = B['L'] | R['S'];
+                } else if (x === 0 && z === size - 1) {
+                    p = B['L'] | R['E'];
+                } else if (x === size -1 && z === 0) {
+                    p = B['L'] | R['W'];
+                } else if (x === size -1 && z === size - 1) {
+                    p = B['L'] | R['N'];
+                // 以下四个判断用于判断是否是边缘
+                } else if (x === 0) {
+                    p = B['T'] | R['E'];
+                } else if (x === size -1) {
+                    p = B['T'] | R['W'];
+                } else if (z === 0) {
+                    p = B['T'] | R['S'];
+                } else if (z === size -1) {
+                    p = B['T'] | R['N'];
+                // 判断是否是星点
+                } else if (x > 0 && x < size - 1 && z > 0 && z < size - 1 && (x % MOD) === VAL && (z % MOD) === VAL) {
+                    p = B['.'];
+                }
+                voxels.setVoxelId(x + originX, originY, z + originZ, p);
+            }
+        }
+    }
+
+    // 用于绘制数字条
+    function drawNumber (x, y, z, n, dx, dz, rotation) {
+        for (let i = 0; i < CLOCK_LENGTH; ++i) {
+            voxels.setVoxel(x, y, z, DIGIT[n % 10], rotation);
+            x += dx;
+            z += dz;
+            n = (n / 10) | 0;
+        }
+    }
+
+    // 绘制双方的计时
+    function drawClock(time) {
+        drawNumber(originX + size + 2, originY - 1, originZ + size - CLOCK_LENGTH + 1, time !== undefined ? time : (clock[0] / TICKS_PER_SECOND) | 0, 0, 1, 3);
+        drawNumber(originX - 3, originY - 1, originZ + CLOCK_LENGTH - 2, time !== undefined ? time : (clock[1] / TICKS_PER_SECOND) | 0, 0, -1, 5);
+    }
+
+    // 把二维棋盘位置x, y变换为数组下标, 用于pieces和board
+    function index (x, y) {
+        return x + y * size;
+    }
+
+    // 初始化游戏
+    function setup () {
+        // 重置棋盘
+        for (let i = 0; i < size * size; ++i) {
+            board[i] = -1;
+            if (pieces[i]) {
+                pieces[i].destroy();
+            }
+            pieces[i] = null;
+        }
+        // 重置分数
+        score[0] = 0;
+        score[1] = KOMI;
+        // 重置当前玩家
+        currentPlayer = 0;
+        // 重置历史棋盘状态
+        prevBoards.length = 0;
+        // 重置玩家
+        playerEntities[0] = playerEntities[1] = null;
+        playerNames[0] = playerNames[1] = 'NULL'
+        // 重置状态
+        gameState = 'wait';
+        // 重置连续过的次数
+        passCount = 0;
+        // 重置计时
+        clock[0] = clock[1] = MAIN_TICKS;
+    }
+
+    // 检查某个位置是否有气
+    function hasLiberties (pX, pY) {
+        // 重置visited
+        visited.fill(false);
+        // 初始化访问队列
+        const toVisit = [ pX, pY ];
+        // 获取起始点颜色
+        const c = board[index(pX, pY)];
+        // 标记起始点为已访问
+        visited[index(pX, pY)] = true;
+
+        // 默认无气
+        let libs = false;
+        // 把x,y放入访问队列
+        function push (x, y) {
+            const idx = index(x, y);
+            // 访问过了就不放
+            if (visited[idx]) {
+                return;
+            }
+            const d = board[idx];
+            if (d === c) {
+                // 颜色相同才放
+                toVisit.push(x, y);
+                visited[idx] = true;
+            } else if (d < 0) {
+                // 该位置(x, y)为空, 表示有气
+                libs = true;
+            }
+        }
+        // 广度优先算法(BFS)
+        for (let i = 0; i < toVisit.length; i += 2) {
+            // 获取队列前端的位置
+            const x = toVisit[i];
+            const y = toVisit[i + 1];
+            // 向上下左右四个方向进行搜索
+            if (x > 0) { push(x - 1, y); }
+            if (x < size - 1) { push(x + 1, y); }
+            if (y > 0) { push(x, y - 1); }
+            if (y < size - 1) { push(x, y + 1); }
+        }
+        // 返回结果
+        return libs;
+    }
+
+    // 计算提子
+    function capture (x, y, koTest) {
+        // 无子直接返回
+        if (board[index(x, y)] < 0) {
+            return;
+        }
+        const libs = hasLiberties(x, y);
+        // 对局中, 有气不能提子
+        if (gameState === 'play' && libs) {
+            return;
+        }
+        for (let x = 0; x < size; ++x) {
+            for (let y = 0; y < size; ++y) {
+                const idx = index(x, y);
+                // 复用hasLiberties产生的访问结果, 被访问过表示需要被提走
+                if (visited[idx]) {
+                    // 如果不是预演, 就执行提子
+                    if (!koTest) {
+                        // 对方玩家
+                        const c = board[idx] ^ 1;
+                        // 棋子实体
+                        const p = pieces[idx];
+                        // 对方分数+1
+                        score[c] += 1;
+                        // 销毁棋子
+                        p.destroy();
+                        pieces[idx] = null;
+                    }
+                    // 标记为空
+                    board[idx] = -1;
+                }
+            }
+        }
+    }
+
+    // 恢复棋子
+    function restorePiece() {
+        if (lastPieceIdx >= 0 && pieces[lastPieceIdx]) {
+            pieces[lastPieceIdx].mesh = STONE_MESH[board[lastPieceIdx]];
+        }
+    }
+
+    // 落子
+    function placePiece (x, y) {
+        const c = currentPlayer;
+        const idx = index(x, y);
+
+        // 检查落子位置是否为空
+        if (board[idx] >= 0) {
+            return;
+        }
+
+        // 尝试落子
+        board[idx] = c;
+        
+        // 备份棋盘状态
+        const koTest = board.slice();
+
+        // 预演计算提子
+        if (x > 0) { capture(x - 1, y, true); }
+        if (x < size - 1) { capture(x + 1, y, true); }
+        if (y > 0) { capture(x, y - 1, true); }
+        if (y < size - 1) { capture(x, y + 1, true); }
+        capture(x, y, true);
+
+        // 计算提子后的状态
+        const ko = board.join();
+
+        // 恢复棋盘到计算提子前的状态
+        for (let j = 0; j < koTest.length; ++j) {
+            board[j] = koTest[j];
+        }
+
+        // 检查当前棋盘状态是否已经出现过
+        for (let i = 0; i < prevBoards.length; ++i) {
+            if (prevBoards[i] === ko) {
+                // 状态重复, 落子无效
+                board[idx] = -1;
+                return;
+            }
+        }
+
+        // 复原上个棋子
+        restorePiece();
+        // 创建棋子对象
+        pieces[idx] = world.createEntity({
+            position: [
+                originX + x + 0.5,
+                originY + 1.125,
+                originZ + y + 0.5,
+            ],
+            meshScale: [1 / 24, 1 / 24, 1 / 24],
+            mesh: CURRENT_STONE_MESH[c],
+            gravity: false,
+            collides: true,
+            fixed: true,
+        });
+
+        // 计算提子(这回事真的了)
+        if (x > 0) { capture(x - 1, y); }
+        if (x < size - 1) { capture(x + 1, y); }
+        if (y > 0) { capture(x, y - 1); }
+        if (y < size - 1) { capture(x, y + 1); }
+        capture(x, y);
+        
+        // 保存当前棋盘状态
+        prevBoards.push(board.join());
+
+        // 切换到下个玩家
+        currentPlayer ^= 1;
+
+        // 清空pass计数
+        passCount = 0;
+
+        // 更新clock
+        clock[currentPlayer] = Math.max(clock[currentPlayer], LIGHTNING_TICKS);
+
+        // 更新最后落子的位置
+        lastPieceIdx = idx;
+        return true;
+    }
+
+    // 计算分数
+    function countScore () {
+        visited.fill(false);
+        // 表示空地是否和黑子/白子相邻
+        const adj = [ false, false ];
+        // 计算x,y的得分
+        function count (x, y) {
+            // 棋盘外为0分
+            if (x < 0 || y < 0 || x >= size || y >= size) {
+                return 0;
+            }
+
+            const idx = index(x, y);
+            // 之前访问过(计算过)为0分
+            if (visited[idx]) {
+                return 0;
+            }
+            // 标记为访问过(计算过)
+            visited[idx] = true;
+
+            const b = board[idx];
+            // 空地才计算
+            if (b === -1) {
+                return (1 + // 空地本身1分
+                    // 递归的计算上下左右的分数
+                    count(x - 1, y) +
+                    count(x + 1, y) + 
+                    count(x, y - 1) +
+                    count(x, y + 1)
+                );
+            }
+            // 不是空地, 则标记为可已达到某个颜色的棋子
+            adj[b] = true;
+            return 0;
+        }
+        // 遍历size*size棋盘的每个棋子
+        for (let x = 0; x < size; ++x) {
+            for (let y = 0; y < size; ++y) {
+                // 初始化标记
+                adj[0] = adj[1] = false;
+                // 计算得分
+                const s = count(x, y);
+                // 只能有一方获得该分数
+                if (adj[0] && !adj[1]) {
+                    score[0] += s;
+                } else if (adj[1] && !adj[0]) {
+                    score[1] += s;
+                }
+            }
+        }
+    }
+
+    // 过
+    function pass (entity) {
+        if (gameState === 'play') {
+            if (entity === playerEntities[currentPlayer]) {
+                broadcast(`${playerNames[currentPlayer]} 弃权一手`);
+                // 增加过的技术
+                passCount += 1;
+                // 切换当前玩家
+                currentPlayer ^= 1;
+
+                // 更新clock
+                clock[currentPlayer] = Math.max(clock[currentPlayer], LIGHTNING_TICKS);
+
+                // 连续过2次 对局结束
+                if (passCount >= 2) {
+                    restorePiece();
+                    gameState = 'count';
+                    passCount = 0;
+                    currentPlayer = -1;
+                    broadcast('请点击对方死子进行标记');
+                    broadcast('点击己方已被标记的棋子表示确认死子');
+                    broadcast('双方清点完成后请发送 清点完毕');
+                }
+            }
+        }
+    }
+    
+    // 认输
+    function resign (entity) {
+        for (let i = 0; i < 2; ++i) {
+            if (entity === playerEntities[i]) {
+                if (gameState === 'play' || gameState === 'count') {
+                    broadcast(`${playerNames[i]} 认输`);
+                    score[i] = -Infinity;
+                    gameState = 'done';
+                }
+            }
+        }
+    }
+
+    // 清点完毕
+    function finishCount (entity) {
+        if (gameState === 'count') {
+            for (let i = 0; i < 2; ++i) {
+                if (entity === playerEntities[i]) {
+                    passCount |= 1 << i;
+                }
+            }
+            if (passCount === 3) {
+                gameState = 'done';
+            }
+        }
+    }
+
+    // 创建期盼
+    createBoard();
+    // 绘制计时
+    drawClock(0);
+    // 创建碗
+    [
+        [originX + size + 3, originZ],
+        [originX - 3, originZ + size],
+    ].map(([x, z], i) => world.createEntity({
+        position: [
+            x,
+            originY + 0.5,
+            z,
+        ],
+        mesh: BOWL_MESH[i],
+        meshScale: [1 / 16, 1 / 16, 1 / 16],
+        fixed: true,
+        collides: true,
+        gravity: false,
+    }));
+    // 创建选择按钮
+    const chooseButtons = [originX + size + 2.5, originX - 2.5].map((x) => world.createEntity({
+        position: [
+            x,
+            originY + 0.3,
+            originZ + size / 2,
+        ],
+        mesh: CHOOSE_BUTTON_MESH,
+        meshScale: [1 / 24, 1 / 24, 1 / 24],
+        fixed: true,
+        collides: true,
+        gravity: false,
+    }))
+
+    // 下棋处理
+    const removeTips = [false, false];
+    world.onPress(({ entity, button, raycast:{ hitPosition:{x, y, z}, hitEntity } }) => {
+        if (gameState === 'play') { // 正常落子
+            // 对局
+            if (button !== 'action0' || // 判断按钮
+                entity !== playerEntities[currentPlayer] || // 是否是对弈的玩家
+                Math.abs(y - originY) > 2) { // 是否在棋盘上方
+                return;
+            }
+            // 计算位置
+            const dx = Math.floor(x) - originX;
+            const dz = Math.floor(z) - originZ;
+            // 判断是否在棋盘上
+            if (dx < 0 || dx >= size || dz < 0 || dz >= size) {
+                return;
+            }
+            // 落子
+            placePiece(dx, dz);
+        } else if (gameState === 'count' && hitEntity) { // 清算死子
+            const idx = pieces.indexOf(hitEntity);
+            if (idx < 0) {
+                return;
+            }
+            const x = Math.floor(hitEntity.position.x - originX);
+            const y = Math.floor(hitEntity.position.z - originZ);
+            const c = board[idx];
+            if (entity !== playerEntities[c]) {
+                // 点击对方棋子, 切换标记状态
+                if (hitEntity.mesh === STONE_MESH[c]) {
+                    hitEntity.mesh = CURRENT_STONE_MESH[c];
+                    // 只提示一次, 不然太烦人了
+                    if (!removeTips[c]) {
+                        hitEntity.say(`请${playerNames[c]}确认死子`);
+                        removeTips[c] = true;
+                    }
+                } else if (hitEntity.mesh === CURRENT_STONE_MESH[c]) {
+                    hitEntity.mesh = STONE_MESH[c];
+                }
+            } else if (hitEntity.mesh === CURRENT_STONE_MESH[c]) {
+                // 点击了己方已被标记的棋子, 表示确认为死子, 执行提子
+                capture(x, y);
+            }
+        }
+    });
+
+    // 选择按钮
+    chooseButtons.forEach((button, c) => {
+        button.onEntityContact(({ other }) => {
+            if (gameState === 'wait' && other.isPlayer && playerEntities[c] !== other) {
+                playerEntities[c] = other;
+                playerNames[c] = other.player.name;
+                broadcast(`${playerNames[c]}执${COLORS[c]}棋`);
+                // 如果不允许自我对弈, 则只能选择一方
+                if (!ALLOW_SELF_PLAY && playerEntities[c^1] === other) {
+                    playerEntities[c^1] = null;
+                    playerNames[c^1] = 'NULL';
+                }
+            }
+        });
+    });
+
+    // 离开则认输
+    world.onPlayerLeave(({ entity }) => resign(entity));
+
+    // 可以通过聊天来过或认输
+    world.onChat(({ entity, message }) => {
+        if (message.match(PASS_RE)) {
+            pass(entity);
+        } else if (message.match(RESIGN_RE)) {
+            resign(entity);
+        } else if (message.match(FINISH_COUNT_RE)) {
+            finishCount(entity);
+        } else if (ADMIN_NAMES.includes(entity.player.name) && message.match(RESET_RE)) {
+            const resetName = message.split(/\s+/)[1];
+            if (resetName === name && gameState != 'wait') {
+                gameState = 'done';
+                broadcast(`管理员${entity.player.name}进行了重置`)
+            }
+        }
+    });
+    
+    while (true) {
+        // 初始化
+        setup();
+
+        // 等待双方玩家选择颜色
+        while (!playerEntities[0] || !playerEntities[1]) {
+            await world.nextTick();
+        }
+
+        // 把非对弈玩家传送走
+        for (const v of visitors) {
+            if (playerEntities.includes(v)) continue;
+            teleport(v, `${name}观战室`);
+        }
+        visitors.clear();
+
+        broadcast('对局开始');
+        gameState = 'play';
+        // 处理每回合, 直到对局结束
+        while (gameState === 'play') {
+            await world.nextTick();
+            if (--clock[currentPlayer] <= 0) {
+                pass(playerEntities[currentPlayer]);
+            }
+            drawClock();
+        }
+
+        if (gameState !== 'done') {
+            // 等待清算完毕
+            while (gameState === 'count') {
+                await world.nextTick();
+            }
+            // 计算分数
+            countScore();
+            // 通知结果
+            broadcast(`对局结束: 黑棋${score[0]}目 vs 白棋${score[1]}目`);
+            const winner = score[0] > score[1] ? 0 : 1;
+            broadcast(`执${COLORS[winner]}棋的选手${playerNames[winner]}获胜.`);
+        }
+
+        // 清空计时
+        drawClock(0);
+        // 把对弈玩家传送走
+        playerEntities.forEach((e) => teleport(e, `${name}观战室`));
+        // 既然对局已经结束, 就让棋盘上的棋子动起来, 这样会很有趣
+        pieces.forEach((p) => {
+            if (p) {
+                p.collides = true;
+                p.fixed = false;
+                p.gravity = true;
+                p.velocity.x += 0.1 * (Math.random() - 0.5);
+                p.velocity.y += 0.1 * Math.random();
+                p.velocity.z += 0.1 * (Math.random() - 0.5)
+            }
+        });
+
+        // 十秒后开始下一轮
+        await sleep(10 * 1000);
+    }
+}
+
+// 获取通过标签定义的实体属性
+function getEntityAttr(e) {
+    const attr = {};
+    e.tags().forEach((tag) => {
+        const g = tag.match(/(\S+)\s*:\s*(\S+)/);
+        if (g) {
+            attr[g[1]] = g[2];
+        }
+    });
+    return attr;
+}
+
+// 在所有添加了go_spawner的实体的位置 创建游戏实例
+world.querySelectorAll('.go_spawner').forEach((e) => {
+    const attr = getEntityAttr(e);
+    if ('name' in attr) {
+        playGo(attr.name, parseInt(attr.size) || 9,
+            Math.floor(e.position.x),
+            Math.floor(e.position.y),
+            Math.floor(e.position.z));
+    }  
+});
+    
+
+// 删除临时实体
+world.querySelectorAll('.temporary').forEach((e) => e.destroy());
+// 对所有玩家启用ActionA
+world.onPlayerJoin(({ entity }) => {
+    entity.player.enableActionA = true;
+});
+            </code>
+                                                </pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <a class="panel-title collapsed" data-toggle="collapse" data-parent="#panel-586155"
+                                    href="#panel-element1-5">指令系统</a>
+                            </div>
+                            <div id="panel-element1-5" class="panel-collapse collapse">
+                                <div id="cnblogs_post_body" class="blogpost-body cnblogs-markdown">
+                                    <pre>
+            <code class="language-js">
+/**
+ * !info {Project} -来自Nomen
+ * 指令系统，在聊天框输入“/mute Nomen“
+ */
+
+
+
+console.clear()
+world.addCollisionFilter('player', 'player')
+world.onPlayerJoin(({entity})=>{
+    entity.player.spawnPoint = new Box3Vector3(16, 11, 16)
+    entity.player.forceRespawn()
+})
+
+world.onPlayerJoin(async ({ entity }) => {
+    entity.isOP=['Nomen'].includes(entity.player.name)?true:false;
+    Object.assign(entity, {
+        'ban': function (name) {
+            if (!entity.isOP) { entity.player.directMessage('权限不足'); return; }
+            find(name).player.kick()
+        },
+        'kill': function (name) {
+            if (!entity.isOP) { entity.player.directMessage('权限不足'); return; }
+            find(name).hp = 0;
+        },
+        'mute': function (name) {
+            if (!entity.isOP) { entity.player.directMessage('权限不足'); return; }
+            find(name).player.mute = !find(name).player.mute;
+        },
+        'fix': function () {
+            entity.hp = 0;
+        },
+        'help': function (name) {
+            commandList.forEach((com) => {
+                entity.player.directMessage(com);
+            })
+        },
+        'add': function (...param) {
+            let a = 0;
+            param.forEach((r) => {
+                a += r;
+            })
+            entity.player.directMessage(a)
+        },
+    })
+})
+
+world.onChat(({ message: m, entity }) => {
+    if (m[0] == '$' && admin.includes(e.player.name)) {
+        const evals = m.replace('$', '')
+        try {
+            e.player.directMessage('~>' + evals)
+            e.player.directMessage('<~' + eval(evals))
+        } catch (err) {
+            e.player.directMessage(err)
+        }
+    } else if (m[0] == '/') {
+        var cmd = m.substring(1).split(/\s+/);
+        if (entity[cmd[0]] === undefined) {
+            entity.player.directMessage('您的指令不存在或无效')
+        } else {
+            var params = cmd.slice(1, cmd.length);
+            var paramIn = '';
+            params.forEach((param) => {
+                paramIn = isNumber(param) ? paramIn.concat(param, ',') : paramIn.concat(`'`, param, `'`, ',');
+            })
+            console.log(paramIn)
+            paramIn.substring(0, params.length - 1);
+            console.log(`entity.${cmd[0]}(${paramIn})`)
+            eval(`entity[cmd[0]](${paramIn})`);
+        }
+    }
+});
+function find(n) { return world.querySelectorAll('player').filter(e => e.player.name === n)[0]; }
+function isNumber(value) { var patrn = /^[0-9]*[1-9][0-9]*$/; if (patrn.exec(value) == null || value == "") { return false } else { return true } }
+
+const commandList = ['msg:私聊', 'help:获取指令帮助', 'save:安全保存', 'fix:卡点脱离（慎用）']
+
+            </code>
+                                                </pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <a class="panel-title collapsed" data-toggle="collapse" data-parent="#panel-586155"
+                                    href="#panel-element1-6">NomenSQLite</a>
+                            </div>
+                            <div id="panel-element1-6" class="panel-collapse collapse">
+                                <div id="cnblogs_post_body" class="blogpost-body cnblogs-markdown">
+                                        <p>index.js</p>
+                                        <pre>
+            <code class="language-js">
+/**
+ * !info {Project} -来自Nomen
+ * NomenSQLite示例-玩家存档:介绍帖子https://shequ.codemao.cn/community/539624
+ */
+
+
+
+const NomenSQLite = require('./src.index.js').NomenSQLite;
+const Tables = {
+    'NomenSQLite': [//这是一个表格
+        { name: 'userkey', type: NomenSQLite.DataType.TEXT, notnull: true }, // 这是一行数据，类型为TEXT，名字叫userKey，不能为空
+        { name: 'bag', type: NomenSQLite.DataType.TEXT, notnull: false },
+        { name: 'coin', type: NomenSQLite.DataType.NUMBER, notnull: false }
+    ],
+};
+
+
+var NomenUser = null;
+(async () => {
+    //初始化并启动NomenSQLite
+    let Nomen = await NomenSQLite.launch(Tables, NomenSQLite.LaunchAction.CREATE_OR_LAUNCH, (a, b) => { console.error(b) });
+
+    //然后初始化NomenSQLite这个表格的管理器
+    NomenUser = Nomen.operate('NomenSQLite');
+})()
+
+const BAG = []//玩家背包初始状态
+const COIN = 0;//玩家金币初始状态
+
+//当玩家进入的时候
+world.onPlayerJoin(async ({ entity }) => {
+    //如果数据库和NomenSQLite没有准备好就重试
+    while (true) {
+        if (NomenUser && NomenUser.select) break;
+    }
+
+    //读取玩家的数据，使用玩家唯一的userKey进行标识
+    let result = await NomenUser.select('userkey', entity.player.userKey);
+
+    //如果玩家存在存档
+    if (result.length) {
+
+        //将玩家的金币设置为存档中的金币
+        entity.coin = result[0].coin;
+
+        //将玩家的背包解析出来
+        entity.bag = JSON.parse(result[0].bag);
+    } else {
+        //如果不存在存档，就插入一个新的存档
+        await NomenUser.insert({
+            userkey: entity.player.userKey, //玩家唯一标识符
+            bag: JSON.stringify(BAG), //玩家背包
+            coin: COIN //玩家金币
+        })
+    }
+})
+
+world.onPlayerLeave(({ entity }) => {
+    //更新玩家云存档
+    NomenUser.update(`userkey=${entity.player.userKey}`//使用userKey搜寻玩家的旧存档
+        , {
+            bag: JSON.stringify(entity.bag), //玩家背包
+            coin: entity.coin //玩家金币
+        })
+})
+            </code>
+            </pre>
+            <p>scr.index.js</p>
+<pre>
+            <code class="language-js">
+/**
+ * !info {Project} -来自Nomen
+ * NomenSQLite:介绍帖子https://shequ.codemao.cn/wiki/forum/539617
+ */
+
+
+
+class NomenSQLite {
+    constructor() {
+        if (NomenSQLite.instance) return NomenSQLite.instance;
+        NomenSQLite.instance = this;
+    }
+    static launched = false;
+    static async launch(config, action, callback) {
+        if (!config) throw new Error('请传入配置参数后重试');
+        if (!this.instance) this.instance = new NomenSQLite();
+        else return this.instance;
+        this.tables = config || {};
+        this._data = {};
+        if (!Object.keys(this.tables).length) this._data = null;
+        Object.keys(this.tables).forEach(v => {
+            if (Array.isArray(this.tables[v]) && this.tables[v].length) {
+                this._data[v] = [];
+                this.tables[v].forEach(r => {
+                    if (typeof r.name == "string" && Object.values(this.DataType).includes(r.type)) {
+                        this._data[v].push({ name: r.name, type: r.type, notnull: r.notnull || false });
+                    }
+                })
+            }
+        })
+        console.log(JSON.stringify(this._data));
+        if (!Object.keys(this._data).length) return this.instance;
+        let errMessage = null;
+        if (typeof action == "string" && action.includes('create')) {
+            for (let i = 0; i < Object.keys(this._data).length; i++) {
+                let eString = `CREATE TABLE IF NOT EXISTS "${Object.keys(this._data)[i]}" 
+                (${this._data[Object.keys(this._data)[i]].reduce((p, c) => {
+                    let str = `"${c.name}" ${c.type} ${c.notnull ? 'NOT NULL' : ''}`;
+                    return p ? p.concat(',', str) : str;
+                }, false)})`;
+                try { await this.instance._exec(eString); } catch (err) {
+                    errMessage.concat(err);
+                }
+            }
+        }
+        this.launched = true;
+        if (typeof callback == "function") callback(null, errMessage);
+        return this.instance;
+    }
+    _exec(cmd) {
+        return (typeof cmd == 'string') ? db.sql([cmd]) : new Promise(resolve => resolve(new TypeError('传入参数有误，预期应该为string')))
+    }
+    getAllTables() {
+        return Object.keys(NomenSQLite._data);
+    }
+    async getAllTablesInDatabase() {
+        return (await this._exec(`SELECT * FROM sqlite_master`)).map(v => v.name)
+    }
+    operate(name) {
+        let t = this;
+        if (typeof name == "string" && NomenSQLite.launched) return {
+            select(column, value) {
+                return t._exec(`SELECT * FROM "${name}" ${column == "*" ? `` : (`WHERE "${column}" = ` + (typeof value == "number") ? value : `"${value}"`)}`)
+            },
+            remove(column, value) {
+                return t._exec(`DELETE FROM "${name}" ${column == "*" ? `` : (`WHERE "${column}" = ` + (typeof value == "number") ? value : `"${value}"`)}`)
+            },
+            insert(value) {
+                if (Object.prototype.toString.call(value) == '[object Object]' && Object.keys(value).length) {
+                    let eString = `(${Object.keys(value).map(v => `"${v}"`).join(',')}) VALUES(${Object.values(value).map(v => (typeof v == "number") ? v : `"${v}"`).join(',')})`;
+                    return t._exec(`INSERT INTO "${name}" ${eString}`);
+                } else return null;
+            },
+            update(column, value) {
+                if (Object.prototype.toString.call(value) == '[object Object]' && Object.keys(value).length && typeof column == "string" && column.includes('=')) {
+                    let eArr = [];
+                    Object.entries(value).forEach(([k, v]) => eArr.push(`"${k}" = "${v}"`));
+                    let aString = `${column == "*" ? "" : 'WHERE "' + column.split('=')[0] + '"="' + column.split('=')[1] + '"'}`;
+                    console.log(`UPDATE "${name}" SET ${eArr} ${aString}`)
+                    return t._exec(`UPDATE "${name}" SET ${eArr} ${aString}`);
+                } else return null;
+            }
+        }
+        return {};
+    }
+    static instance = null;
+    static LaunchAction = {
+        CREATE_OR_LAUNCH: 'createlaunch',
+        LAUNCH: 'launch'
+    }
+    static DataType = {
+        NUMBER: 'INTEGER',
+        FLOAT: 'REAL',
+        TEXT: 'TEXT',
+        NULL: 'NULL',
+        BLOB: 'BLOB'
+    }
+}
+
+module.exports = {
+    NomenSQLite
+}
+
+  
+            </code>
+                                                </pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <a class="panel-title collapsed" data-toggle="collapse" data-parent="#panel-586155"
+                                    href="#panel-element1-7">PG数据库</a>
+                            </div>
+                            <div id="panel-element1-7" class="panel-collapse collapse">
+                                <div id="cnblogs_post_body" class="blogpost-body cnblogs-markdown">
+                                    <pre>
+            <code class="language-js">
+                /**
+ * !info {Project} -来自网络
+ * PG SQL 操作
+ */
+
+
+
+class message {
+    constructor(state, inform) {
+        return { state: state === true ? 'Succeeded' : 'Failed', inform: inform }
+    }
+}
+const value = {
+    coin: 100,
+}
+class sql {
+    constructor(tableName, init) {
+        this.tableName = tableName;
+        this.initValues = init;
+        this.initialized = false;
+    }    
+    async init() {
+        if (this.initialized) return;
+        try {
+            if((await db.sql`SELECT * FROM ${this.tableName} WHERE id = system`).length){
+                console.log(`===[ ${this.tableName} inited ]===`);
+                this.initialized = true;
+                return;
+            }
+            db.sql`CREATE TABLE IF NOT EXISTS ${this.tableName}(
+                key CHAR(16) NOT NULL,
+                value TEXT NOT NULL
+            )`
+            console.log(`===[ ${this.tableName} init succeeded ]===`)
+            // var row=db.sql`SELECT * FROM ${this.tableName} WHERE key=system`
+            // if(row && !row.length){
+            //     var data=JSON.stringify({initialized:true,tableName:this.tableName})
+            //     db.sql`INSERT INTO ${this.tableName} VALUES(system,data)`;
+            // }
+            this.initialized = true;
+        } catch (error) {
+            throw new Error(`===[ ${this.tableName} init failed ]===\n${error}`)
+        }
+    }
+    async initPlayer(targetEntity) {
+        if (!this.initialized) {console.log('TABLE did not INIT');return;};
+        Object.assign(entity, this.initValues);
+        if (!targetEntity.player.userKey) return;
+        const values = await db.sql`SELECT * FROM ${this.tableName} WHERE id = ${targetEntity.player.userKey}`;
+        if (rows && !rows.length) {
+            db.sql`INSERT INTO ${this.tableName} VALUES(${targetEntity.player.userKey},${value})`;
+        } else {
+            Object.assign(targetEntity, JSON.parse(values[0].value));
+        }
+    }
+    async ALL() {
+        if (!this.initialized) {console.log('TABLE did not INIT');return;};
+        console.warn(`db.sql'SELECT * FROM ${this.tableName}'`)
+        for await (const rows of db.sql`SELECT * FROM ${this.tableName}`) {//${this.tableName}
+            // row.then((ele)=>{
+            //     console.log(ele.key,":",JSON.parse(ele.value))
+            // })
+        }
+    }
+    async DROP() {
+        // if (!this.initialized) {console.log('TABLE did not INIT');return;};
+        await db.sql`DELETE FROM ${this.tableName}`;
+        this.initialized = false;
+    }
+}
+
+
+
+global.DB = {
+    async poll() {
+        while (true) {
+            try {
+                await db.sql`select 1;`
+                break
+            } catch (e) {
+                world.say('pg数据库启动中...')
+            }
+            await sleep(1000)
+        }
+    },
+    async insert(tbName, dict, key) {
+        const keyList = Object.keys(dict)
+        const valList = Object.values(dict).map((v, i) => {
+            if (v.constructor === Array || v.constructor === Object) {
+                return JSON.stringify(v)
+            }
+            return v
+        })
+        let cmd
+        if (key) {
+            cmd = [`INSERT INTO ${tbName} (${keyList})VALUES(`, ...(','.repeat(keyList.length - 1)), `) ON CONFLICT (${key}) DO NOTHING;`]
+        } else {
+            cmd = [`INSERT INTO ${tbName} (${keyList})VALUES(`, ...(','.repeat(keyList.length - 1)), `);`]
+        }
+        while (true) {
+            try {
+                return await db.sql(cmd, ...valList)
+            } catch (e) {
+                world.say(e.stack)
+            }
+            await sleep(300)
+        }
+    },
+    async upsert(tbName, dict, key = 'userkey') {
+        const keyList = Object.keys(dict)
+        const valList = Object.values(dict).map((v, i) => {
+            if (v.constructor === Array || v.constructor === Object) {
+                return JSON.stringify(v)
+            }
+            return v
+        })
+        const cmd = [`INSERT OR REPLACE INTO ${tbName} (${keyList})VALUES(`, ...(','.repeat(keyList.length - 1)), `) ON CONFLICT (${key}) DO NOTHING;`]
+
+        try {
+            return await db.sql(cmd, ...valList)
+        } catch (e) {
+            world.say(e.stack + '\n' + cmd + '\n' + valList)
+        }
+    },
+    async update(tbName, key, dict) {
+        let id = dict[key]
+        delete dict[key]
+        let keyList = Object.keys(dict)
+        const valList = Object.values(dict)
+        let head = keyList.shift()
+        let tail = keyList.map((e, i) => `,${e}=`)
+        const cmd = [`UPDATE ${tbName} SET ${head}=`, ...tail, ` WHERE ${key}=`, ';']
+        return await db.sql(cmd, ...valList, id)
+    },
+    async updateAll(tbName, dict) {
+        let keyList = Object.keys(dict)
+        const valList = Object.values(dict)
+        let head = keyList.shift()
+        let tail = keyList.map((e, i) => `,${e}=`)
+        const cmd = [`UPDATE ${tbName} SET ${head}=`, ...tail, ';']
+        return await db.sql(cmd, ...valList)
+    },
+    async del(tbName, cond) {
+        const cmd = [`DELETE FROM ${tbName} WHERE ${cond};`]
+        try {
+            return await db.sql(cmd)
+        } catch (e) {
+            world.say(e.stack + '\n@' + cmd + '\n#' + cond)
+        }
+    },
+    async find(tbName, cond) {
+        cond = cond ? `WHERE ${cond}` : ''
+        const cmd = [`SELECT * FROM ${tbName} ${cond} LIMIT 1;`]
+        try {
+            return (await db.sql(cmd))[0]
+        } catch (e) {
+            world.say(e.stack + '\n@' + cmd + '\n#' + cond)
+        }
+    },
+    async findAll(tbName, cond) {
+        cond = cond ? `WHERE ${cond}` : ''
+        const cmd = [`SELECT * FROM ${tbName} ${cond};`]
+        try {
+            return await db.sql(cmd)
+        } catch (e) {
+            world.say(e.stack + '\n@' + cmd + '\n#' + cond)
+        }
+    },
+    async drop(tbName) {
+        const cmd = [`DROP TABLE ${tbName}`]
+        return await db.sql(cmd)
+    },
+    async count(tbName) {
+        const cmd = [`SELECT COUNT(*) FROM ${tbName}`]
+        const out = (await db.sql(cmd))[0]['count']
+        try {
+            return out
+        } catch (e) {
+            world.say(e.stack)
+        }
+    },
+    async table(tbName, dict) {
+        const cmd = [`CREATE TABLE IF NOT EXISTS ${tbName} (${Object.entries(dict).map(([k, v]) => `${k} ${v}`).join(',')});`]
+        try {
+            return await db.sql(cmd)
+        } catch (e) {
+            world.say(e.stack)
+        }
+    },
+    async rank(tbName, col, where, lim = 100, ord = 'desc') {
+        const cond = where ? `WHERE ${where} ` : ''
+        const cmd = [`SELECT * FROM ${tbName} ${cond} ORDER BY ${col} ${ord} LIMIT ${lim};`]
+        try {
+            return await db.sql(cmd)
+        } catch (e) {
+            world.say(e.stack)
+        }
+    },
+    async savePlayer(user, ...keyList) {
+        if (user.isGuest()) return
+        const data = user.data
+        const valList = keyList.map(e => {
+            const v = data[e]
+            if (v.constructor === Array || v.constructor === Object) {
+                return JSON.stringify(v)
+            } else if (v.constructor === Number) {
+                return v
+            }
+            return v
+        })
+        let head = keyList.shift()
+        let tail = keyList.map((e, i) => `,${e}=`)
+        const cmd = [`UPDATE player SET ${head}=`, ...tail, ` WHERE userkey=`, '']
+        while (true) {
+            try {
+                return await db.sql(cmd, ...valList, user.player.userKey)
+            } catch (e) {
+                world.say(e.stack + '\n@' + cmd + '\n#' + valList)
+            }
+            await sleep(300)
+        }
+    },
+    async loadPlayer(user, list) {
+        const userKey = user.player.userKey
+        while (true) {
+            try {
+                const data = (await (db.sql`SELECT * FROM player WHERE userkey=${userKey}`))[0]
+                if (data) {
+                    for (const k of list) {
+                        data[k] = JSON.parse(data[k])
+                    }
+                    user.data = data
+                    return true
+                }
+                return false
+            } catch (e) {
+                world.say(e.stack)
+            }
+            await sleep(300)
+        }
+    },
+}
+
+async function initDB() {
+    await DB.poll()
+    await DB.table('record', {
+        time: "int not null",
+        boss: "varchar(30) default ''",
+        result: 'int default 0',
+        catSoldier: 'int default 0',
+        spiderSoldier: 'int default 0',
+        mentaSoldier: 'int default 0',
+        buboSoldier: 'int default 0',
+    })
+    // 加新字段
+    try {
+        await db.sql`ALTER TABLE record ADD rhinoSoldier  int default 0`
+    } catch (e) {
+        console.log(e)
+    }
+}
+initDB()
+
+            </code>
+                                                </pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 </body>
 
 </html>
