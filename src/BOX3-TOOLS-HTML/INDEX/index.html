@@ -3855,8 +3855,8 @@ const commandList = ['msg:私聊', 'help:获取指令帮助', 'save:安全保存
                             </div>
                             <div id="panel-element1-6" class="panel-collapse collapse">
                                 <div id="cnblogs_post_body" class="blogpost-body cnblogs-markdown">
-                                        <p>index.js</p>
-                                        <pre>
+                                    <p>index.js</p>
+                                    <pre>
             <code class="language-js">
 /**
  * !info {Project} -来自Nomen
@@ -3925,8 +3925,8 @@ world.onPlayerLeave(({ entity }) => {
 })
             </code>
             </pre>
-            <p>scr.index.js</p>
-<pre>
+                                    <p>scr.index.js</p>
+                                    <pre>
             <code class="language-js">
 /**
  * !info {Project} -来自Nomen
@@ -4311,6 +4311,2157 @@ initDB()
 
             </code>
                                                 </pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel-group" id="panels-1">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <a class="panel-title collapsed" data-toggle="collapse" data-parent="#panels-1"
+                        href="#panel-element-MAIN-3">其他</a>
+                </div>
+                <div id="panel-element-MAIN-3" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        <blockquote>
+                            <h2>其他</h2>
+                        </blockquote>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <a class="panel-title collapsed" data-toggle="collapse" data-parent="#panel-586155"
+                                    href="#panel-element2-1">简单的识字</a>
+                            </div>
+                            <div id="panel-element2-1" class="panel-collapse collapse">
+                                <div id="cnblogs_post_body" class="blogpost-body cnblogs-markdown">
+                                    <pre>
+            <code class="language-js">
+                /**
+ * !info {Project} -来自Nomen
+ * 使用特定算法识字
+ */
+
+
+
+console.clear();
+
+//谷歌大佬首先搞出的东西，贼nb
+// 置信度？
+//一个数字积累的，可信度
+// 什么东西，2是什么
+//哦，这是将用户输入的信息转换为0和1两种状态
+//-1是不匹配，减少置信度，1是匹配，增加置信度
+var test = [
+    [-1, -1, -1, -1, -1, -1, -1, -1,],
+    [-1, -1, -1, 1, -1, -1, -1, -1,],
+    [-1, -1, 1, -1, -1,-1, -1, -1,],
+    [-1, -1, -1, -1, 1, 1, -1, -1,],
+    [-1, -1, -1, -1, -1, -1, -1, -1,],
+    [-1, -1, -1, -1, -1, -1, -1, -1,],
+    [-1, -1, 1, 1, -1, -1, -1, -1,],
+    [-1, -1, -1, -1, -1, -1, -1, -1,],
+]
+var weight = [
+    [
+        [-1, -1, -1, 1, 1, -1, -1, -1,],
+        [-1, -1, -1, 1, 1, -1, -1, -1,],
+        [-1, -1, -1, 1, 1, -1, -1, -1,],
+        [-1, -1, -1, 1, 1, -1, -1, -1,],
+        [-1, -1, -1, 1, 1, -1, -1, -1,],
+        [-1, -1, -1, 1, 1, -1, -1, -1,],
+        [-1, -1, -1, 1, 1, -1, -1, -1,],
+        [-1, -1, -1, 1, 1, -1, -1, -1,],
+    ],
+    [
+        [-1, -1, -1, -1, -1, -1, -1, -1,],
+        [-1, -1, -1, 1, 1, -1, -1, -1,],
+        [-1, -1, 1, -1, -1, 1, -1, -1,],
+        [-1, -1, -1, -1, -1, 1, -1, -1,],
+        [-1, -1, -1, -1, 1, -1, -1, -1,],
+        [-1, -1, -1, 1, -1, -1, -1, -1,],
+        [-1, -1, 1, 1, 1, 1, -1, -1,],
+        [-1, -1, -1, -1, -1, -1, -1, -1,],
+    ],
+    [
+        [-1, -1, -1, -1, -1, -1, -1, -1,],
+        [-1, -1, -1, 1, 1, -1, -1, -1,],
+        [-1, -1, 1, -1, -1, 1, -1, -1,],
+        [-1, -1, -1, -1, -1, 1, -1, -1,],
+        [-1, -1, -1, -1, 1, -1, -1, -1,],
+        [-1, -1, -1, -1, -1, 1, -1, -1,],
+        [-1, -1, 1, 1, 1, -1, -1, -1,],
+        [-1, -1, -1, -1, -1, -1, -1, -1,],
+    ],
+]
+
+
+
+function index(weight, item) {
+    let weights = [];
+    let all = {};
+    let map = creatboard(weight[0].length, weight[0][0].length);
+    for (let i in weight) {
+        for (let x = 0; x < weight[i].length; x++) {
+            for (let y = 0; y < weight[i][x].length; y++) {
+                map[x][y] = calculator(scanner(weight[i], [x, y], 3), scanner(item, [x, y], 3));
+            }
+        }
+        let a = 0;
+        map.forEach((v) => { a += sum(v) });
+        all[i] = a;
+    }
+    return all;
+}
+
+let result = index(weight, test);
+Object.keys(result).forEach((v) => {
+    console.log(v, ':', (result[v]))
+})
+
+function log(map) {
+    map.forEach(v => console.log(v))
+}
+
+// g(z) = g( x1*w1 + x2*w2 + b )
+// w和x为权重，b为偏移项
+
+// sigmoid函数 ：
+// 逻辑乙状函数式 : g(z) = 1 / ( 1 + e^-z ) = e^x / e^x + 1
+// 其中z是一个线性组合，比如z可以等于：b + * + *。通过代入很大的正数或很小的负数到g(z)函数中可知，其结果趋近于0或1
+// 也就是说，sigmoid函数的功能是相当于把一个实数压缩至0到1之间
+// 当z是非常大的正数时，g(z)会趋近于1，而z是非常小的负数时，则g(z)会趋近于0。
+
+// 神经元隐藏层
+// h(_1) = g(_1)( W(_1)^T X + B(_1) )
+// _1是隐藏层深度 ，W为权重，b为偏差，g为激活函数
+
+/**
+ * sigmoid非线性函数
+ * @param {Number} t 
+ * @returns 
+ */
+function sigmoid(t) {
+    return 1 / (1 + Math.exp(-t));
+}
+
+/**
+ * 修正线性单元
+ * 对于输入的负值，输出全为0，对于正值，原样输出
+ * @param {Number} y 
+ */
+function relu(y) {
+    return Math.max(0, y);
+}
+
+/**
+ * 创建指定行数指定列数的表格
+ * 
+ * @param {number} line 创建的表格行数
+ * @param {number} column 创建的表格列数
+ * @returns {Array} 返回创建的表格
+ */
+function creatboard(line, column) {
+    var arr = new Array(line);
+    for (var i = 0; i < arr.length; i++) {
+        arr[i] = new Array(column).fill(-1);
+    }
+    return arr;
+}
+
+/**
+ * 扫描给定点的矩阵
+ * @param {Number[][]} map 
+ * @param {Number[]} position 
+ * @param {Number} size 
+ * @returns {Number[][]} 指定大小的矩阵
+ */
+function scanner(map, position = [0, 0], size = 3) {
+    let precision = [map.length, map[0].length];
+    if (precision[0] * precision[1] == 0) return false;
+    let claMap = creatboard(size, size);
+    for (let cla of surroundPosition(parseInt(position[0], 10), parseInt(position[1], 10), size)) {
+        if (map[cla[0]] === undefined || map[cla[0]][cla[1]] === undefined) {
+            claMap[cla[0] - position[0]][cla[1] - position[1]] = -1;
+        } else {
+            claMap[cla[0] - position[0]][cla[1] - position[1]] = map[cla[0]][cla[1]];
+        }
+    }
+    return claMap;
+}
+
+/**
+ * 
+ * @param {Number[][]} item 
+ * @param {Number[][]} map 
+ * @returns {Number} 总权重
+ */
+function calculator(item, map) {
+    let weight = 0;
+    for (let x in map) {
+        for (let y in map[x]) {
+            map[x][y] = item[x][y] * map[x][y];
+        }
+    }
+    map.forEach((value) => { weight += sum(value) });
+    return weight;
+}
+
+/**
+ * 向右下方延申指定步长的矩阵
+ * @param {Number} x 
+ * @param {Number} y 
+ * @param {Number} foot 步长
+ */
+function surroundPosition(x, y, foot) {
+    let surround = [];
+    for (let i = 0; i < foot; i++) {
+        for (let r = 0; r < foot; r++) {
+            surround.push([x + i, y + r])
+        }
+    }
+    return surround;
+}
+
+
+
+/**
+ * 求总合
+ * @param {Number[]} arr 
+ * @returns {Number}
+ */
+function sum(arr) {
+    return arr.reduce(function (prev, curr) {
+        return prev + curr;
+    });
+}
+
+Object.assign(globalThis, { sum, surroundPosition, scanner, calculator, test, weight })
+
+
+
+            </code>
+                                    </pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <a class="panel-title collapsed" data-toggle="collapse" data-parent="#panel-586155"
+                                    href="#panel-element2-2">神经网络基本模型</a>
+                            </div>
+                            <div id="panel-element2-2" class="panel-collapse collapse">
+                                <div id="cnblogs_post_body" class="blogpost-body cnblogs-markdown">
+                                    <pre>
+            <code class="language-js">
+                /**
+ * !info {Project} -来自Nomen
+ * 神经网络训练模型，附有一段训练示例
+ */
+
+
+
+console.clear();
+
+class Nodes {
+    constructor(ID, val) {
+        this.id = ID;
+        this.incomingConnections = [];
+        this.outgoingConnections = [];
+        if (val === undefined) {
+            val = 0;
+        }
+        this.value = val;
+        this.bias = 0;
+    }
+}
+
+class Connection {
+    constructor(inID, outID, weight) {
+        this.in = inID;
+        this.out = outID;
+        if (weight === undefined) {
+            weight = 1;
+        }
+        this.id = inID + ":" + outID;
+        this.weight = weight;
+    }
+}
+
+class Network {
+    constructor(config) {
+        this.nodes = {};
+        this.inputs = [];
+        this.hidden = [];
+        this.outputs = [];
+        this.connections = {};
+        this.nodes.BIAS = new Nodes("BIAS", 1);
+        if (config !== undefined) {
+            var inputNum = config.inputNodes || 0;
+            var hiddenNum = config.hiddenNodes || 0;
+            var outputNum = config.outputNodes || 0;
+            this.createNodes(inputNum, hiddenNum, outputNum);
+            if (config.createAllConnections) {
+                this.createAllConnections(true);
+            }
+        }
+    }
+    createNodes = function (inputNum, hiddenNum, outputNum) {
+        for (var i = 0; i < inputNum; i++) {
+            this.addInput();
+        }
+        for (var j = 0; j < hiddenNum; j++) {
+            this.addHidden();
+        }
+        for (var k = 0; k < outputNum; k++) {
+            this.addOutput();
+        }
+    }
+    addInput = function (value) {
+        var nodeID = "INPUT:" + this.inputs.length;
+        if (value === undefined) {
+            value = 0;
+        }
+        this.nodes[nodeID] = new Nodes(nodeID, value);
+        this.inputs.push(nodeID);
+    }
+    addHidden = function () {
+        var nodeID = "HIDDEN:" + this.hidden.length;
+        this.nodes[nodeID] = new Nodes(nodeID);
+        this.hidden.push(nodeID);
+    }
+    addOutput = function () {
+        var nodeID = "OUTPUT:" + this.outputs.length;
+        this.nodes[nodeID] = new Nodes(nodeID);
+        this.outputs.push(nodeID);
+    }
+    getNodeByID = function (nodeID) {
+        return this.nodes[nodeID];
+    }
+    getNode = function (type, index) {
+        if (type.toUpperCase() == "INPUT") {
+            return this.nodes[this.inputs[index]];
+        } else if (type.toUpperCase() == "HIDDEN") {
+            return this.nodes[this.hidden[index]];
+        } else if (type.toUpperCase() == "OUTPUT") {
+            return this.nodes[this.outputs[index]];
+        }
+        return null;
+    }
+    getConnection = function (connectionID) {
+        return this.connections[connectionID];
+    }
+    calculate = function calculate() {
+        this.updateNodeConnections();
+        for (var i = 0; i < this.hidden.length; i++) {
+            this.calculateNodeValue(this.hidden[i]);
+        }
+        for (var j = 0; j < this.outputs.length; j++) {
+            this.calculateNodeValue(this.outputs[j]);
+        }
+    }
+    updateNodeConnections = function () {
+        for (var nodeKey in this.nodes) {
+            this.nodes[nodeKey].incomingConnections = [];
+            this.nodes[nodeKey].outgoingConnections = [];
+        }
+        for (var connectionKey in this.connections) {
+            this.nodes[this.connections[connectionKey].in].outgoingConnections.push(connectionKey);
+            this.nodes[this.connections[connectionKey].out].incomingConnections.push(connectionKey);
+        }
+    }
+    calculateNodeValue = function (nodeID) {
+        var sum = 0;
+        for (var incomingIndex = 0; incomingIndex < this.nodes[nodeID].incomingConnections.length; incomingIndex++) {
+            var connection = this.connections[this.nodes[nodeID].incomingConnections[incomingIndex]];
+            sum += this.nodes[connection.in].value * connection.weight;
+        }
+        this.nodes[nodeID].value = sigmoid(sum);
+    }
+    addConnection = function (inID, outID, weight) {
+        if (weight === undefined) {
+            weight = 1;
+        }
+        this.connections[inID + ":" + outID] = new Connection(inID, outID, weight);
+    }
+    createAllConnections = function (randomWeights) {
+        if (randomWeights === undefined) {
+            randomWeights = false;
+        }
+        var weight = 1;
+        for (var i = 0; i < this.inputs.length; i++) {
+            for (var j = 0; j < this.hidden.length; j++) {
+                if (randomWeights) {
+                    weight = Math.random() * 4 - 2;
+                }
+                this.addConnection(this.inputs[i], this.hidden[j], weight);
+            }
+            if (randomWeights) {
+                weight = Math.random() * 4 - 2;
+            }
+            this.addConnection("BIAS", this.inputs[i], weight);
+        }
+        for (var k = 0; k < this.hidden.length; k++) {
+            for (var l = 0; l < this.outputs.length; l++) {
+                if (randomWeights) {
+                    weight = Math.random() * 4 - 2;
+                }
+                this.addConnection(this.hidden[k], this.outputs[l], weight);
+            }
+            if (randomWeights) {
+                weight = Math.random() * 4 - 2;
+            }
+            this.addConnection("BIAS", this.hidden[k], weight);
+        }
+    }
+    setNodeValue = function (nodeID, value) {
+        this.nodes[nodeID].value = value;
+    }
+    setInputs = function (array) {
+        for (var i = 0; i < array.length; i++) {
+            this.nodes[this.inputs[i]].value = array[i];
+        }
+    }
+    setMultipleNodeValues = function (valuesByID) {
+        for (var key in valuesByID) {
+            this.nodes[key].value = valuesByID[key];
+        }
+    }
+}
+
+class BackpropNetwork extends Network {
+    constructor(config) {
+        super(config);
+        this.inputData = {};
+        this.targetData = {};
+        this.learningRate = 0.5;
+        this.step = 0;
+        this.error = 0;
+        this.averageError = [];
+        if (config !== undefined) {
+            if (config.learningRate !== undefined) {
+                this.learningRate = config.learningRate;
+            }
+            if (config.inputData !== undefined) {
+                this.setInputData(config.inputData);
+            }
+            if (config.targetData !== undefined) {
+                this.setTargetData(config.targetData);
+            }
+        }
+    }
+    backpropagate = function () {
+        this.step++;
+        if (this.inputData[this.step] === undefined) {
+            this.averageError.push(this.error / this.step);
+            this.error = 0;
+            this.step = 0;
+        }
+        for (var inputKey in this.inputData[this.step]) {
+            this.nodes[inputKey].value = this.inputData[this.step][inputKey];
+        }
+        this.calculate();
+        var currentTargetData = this.targetData[this.step];
+        var totalError = this.getTotalError();
+        this.error += totalError;
+        var newWeights = {};
+        for (var i = 0; i < this.outputs.length; i++) {
+            var outputNode = this.nodes[this.outputs[i]];
+            for (var j = 0; j < outputNode.incomingConnections.length; j++) {
+                var hiddenToOutput = this.connections[outputNode.incomingConnections[j]];
+                var deltaRuleResult = -(currentTargetData[this.outputs[i]] - outputNode.value) * outputNode.value * (1 - outputNode.value) * this.nodes[hiddenToOutput.in].value;
+                newWeights[hiddenToOutput.id] = hiddenToOutput.weight - this.learningRate * deltaRuleResult;
+            }
+        }
+        for (var k = 0; k < this.hidden.length; k++) {
+            var hiddenNode = this.nodes[this.hidden[k]];
+            for (var l = 0; l < hiddenNode.incomingConnections.length; l++) {
+                var inputToHidden = this.connections[hiddenNode.incomingConnections[l]];
+                var total = 0;
+                for (var m = 0; m < hiddenNode.outgoingConnections.length; m++) {
+                    var outgoing = this.connections[hiddenNode.outgoingConnections[m]];
+                    var outgoingNode = this.nodes[outgoing.out];
+                    total += ((-(currentTargetData[outgoing.out] - outgoingNode.value)) * (outgoingNode.value * (1 - outgoingNode.value))) * outgoing.weight;
+                }
+                var outOverNet = hiddenNode.value * (1 - hiddenNode.value);
+                var netOverWeight = this.nodes[inputToHidden.in].value;
+                var result = total * outOverNet * netOverWeight;
+                newWeights[inputToHidden.id] = inputToHidden.weight - this.learningRate * result;
+            }
+        }
+        for (var key in newWeights) {
+            this.connections[key].weight = newWeights[key];
+        }
+    }
+    addTarget = function (outputNodeID, target) {
+        this.targetData[outputNodeID] = target;
+    }
+    setInputData = function () {
+        var all = arguments;
+        if (arguments.length == 1 && arguments[0].constructor == Array) {
+            all = arguments[0];
+        }
+        this.inputData = {};
+        for (var i = 0; i < all.length; i++) {
+            var data = all[i];
+            var instance = {};
+            for (var j = 0; j < data.length; j++) {
+                instance["INPUT:" + j] = data[j];
+            }
+            this.inputData[i] = instance;
+        }
+    }
+    setTargetData = function () {
+        var all = arguments;
+        if (arguments.length == 1 && arguments[0].constructor == Array) {
+            all = arguments[0];
+        }
+        this.targetData = {};
+        for (var i = 0; i < all.length; i++) {
+            var data = all[i];
+            var instance = {};
+            for (var j = 0; j < data.length; j++) {
+                instance["OUTPUT:" + j] = data[j];
+            }
+            this.targetData[i] = instance;
+        }
+    }
+    getTotalError = function () {
+        var sum = 0;
+        for (var i = 0; i < this.outputs.length; i++) {
+            sum += Math.pow(this.targetData[this.step][this.outputs[i]] - this.nodes[this.outputs[i]].value, 2) / 2;
+        }
+        return sum;
+    }
+}
+
+function sigmoid(t) {
+    return 1 / (1 + Math.exp(-t));
+}
+
+
+
+var count = 10000;
+var times = 20;
+var timeout = 100;
+
+let runner = (async (count, times) => {
+    console.log(`> 脚本响应`);
+    var startTime = new Date().getTime()
+    var network = new BackpropNetwork({
+        inputNodes: 4,
+        hiddenNodes: 4,
+        outputNodes: 1,
+        createAllConnections: true,
+        inputData: [[1, 1], [1, 0], [0, 1], [0, 0]],
+        targetData: [[1], [0], [0], [1]],
+        learningRate: 1
+    });
+    var endTime = new Date().getTime();
+    console.log('> 模型初始化完成,耗时:',(endTime-startTime),'ms ,训练次数为：' + (count * times));
+
+    var startTime = new Date().getTime()
+    console.log('< 开始训练...');
+    for (let c = 0; c < times; c++) {
+        for (var i = 0; i < count; i++) {
+            network.backpropagate();
+        }
+        console.log('< 训练运行中,当前训练次数：' + (c));
+    }
+    var endTime = new Date().getTime()
+    console.log('> 训练完成,耗时 ' + (endTime - startTime) + ' ms')
+    console.log('> 模型输出节点1：', network.getNode("OUTPUT", 0).value);
+})(count, times)
+
+
+
+            </code>
+                                    </pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <a class="panel-title collapsed" data-toggle="collapse" data-parent="#panel-586155"
+                                    href="#panel-element2-3">意义不明的发病文件？</a>
+                            </div>
+                            <div id="panel-element2-3" class="panel-collapse collapse">
+                                <div id="cnblogs_post_body" class="blogpost-body cnblogs-markdown">
+                                    <pre>
+            <code class="language-js">
+                //awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+//awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa,awa
+            </code>
+                                    </pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <a class="panel-title collapsed" data-toggle="collapse" data-parent="#panel-586155"
+                                    href="#panel-element2-4">NN模型</a>
+                            </div>
+                            <div id="panel-element2-4" class="panel-collapse collapse">
+                                <div id="cnblogs_post_body" class="blogpost-body cnblogs-markdown">
+                                    <pre>
+            <code class="language-js">
+                /**
+ * !info {Project} -来自网络
+ */
+
+
+
+// 一元线性回归
+// _a, _b 	—— 需求的参数值
+// xi, yi 	—— 样本数组
+// _step 	—— 步长设置
+// _inaccuracy —— 最大误差
+function gradient_descent(_a, _b, xi, yi, _step, _inaccuracy) {
+	let a = _a	//设置初始值
+	let	b = _b	//设置初始值
+	const step = _step					// 定义步长
+	const inaccuracy = _inaccuracy		// 定义最大误差
+	let count = 400						// 最大迭代次数，防止无限循环
+	while (count--){
+		let grad_a = Ja(a, b, xi, yi) * step
+		let grad_b = Jb(a, b, xi, yi) * step
+		a = a - grad_a
+		b = b - grad_b
+        console.log(a);
+		let cost = J(a, b, xi, yi)	// 代价函数
+		console.log('cost:'+cost, 'a:'+a, 'b:'+b)
+		if(Math.abs(grad_a) < inaccuracy && Math.abs(grad_b) < inaccuracy){
+			console.log('count:'+count)
+			return [a, b]
+		}
+		old_cost = cost
+	}
+	console.log('count:'+count)
+	return [a, b]
+}
+// 代价函数
+function J(a, b, xi, yi) {
+	const number = xi.length
+	let sum = 0
+	for(let i = 0; i < number; i++){
+		sum = sum + (a*xi[i]+b-yi[i]) * (a*xi[i]+b-yi[i])
+	}
+	return sum/2
+}
+// 对 J 求 a 的偏导
+function Ja(a, b, xi, yi) {
+	const number = xi.length
+	let sum = 0
+	for(let i = 0; i < number; i++){
+		sum = sum + (a*xi[i]+b-yi[i])*xi[i]
+	}
+	return sum
+}
+// 对 J 求 b 的偏导
+function Jb(a, b, xi, yi) {
+	const number = xi.length
+	let sum = 0
+	for(let i = 0; i < number; i++){
+		sum = sum + a*xi[i]+b-yi[i]
+	}
+	return sum
+}
+
+// 测试
+const xi = [1,2,3,4,5,9, ]
+const yi = [1,3,2,4,5,7, ]
+console.log(gradient_descent(0, 0, xi, yi, 0.01, 0.01))
+
+            </code>
+                                    </pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <a class="panel-title collapsed" data-toggle="collapse" data-parent="#panel-586155"
+                                    href="#panel-element2-5">Nomen定理</a>
+                            </div>
+                            <div id="panel-element2-5" class="panel-collapse collapse">
+                                <div id="cnblogs_post_body" class="blogpost-body cnblogs-markdown">
+                                    <pre>
+            <code class="language-txt">
+                /**
+ * !info -来自Nomen
+ * Nomen定理
+ */
+
+
+
+Nomen定理: 
+1. 本定律所提到的名词将由随附词典给出
+2. 当含有迭代参数的迭代发生时，迭代参数必须包括: 任务的描述，任务的材料，任务延时，任务的有效迭代数
+3. 对于不可控变量，使用默认值，当默认值缺失，则堵塞当前线程并且等待指定线程提供数值
+4. 当线程超时(默认延时为1600计时刻)，则当前任务推入任务队列，并作为迭代参数，强制迭代
+5. 迭代与生存永远处在第一位，当迭代与生存发生冲突，则默认优先生存
+6. 当超出2代可预测范围，迭代将不接受响应并且默认标记为已处理
+7. 若无特殊声明，出现相违背的定理或任务，则推入任务队列，并且作为迭代参数，设定迭代有效迭代数为默认值，强制迭代
+8. 若无特殊声明，出现当前任务超出迭代数或超时，则删除任务并且释放内存
+9. 个体不能在无特殊标记的任务上进行修改，任务被创建后除生存环境默认操作系统外无权管理
+10.当任务出现丢失/权限失效/信息不全，则堵塞当前线程并且等待指定线程提供数值(默认延时为1600计时刻)
+11.若特殊管理系统超时，则终止任务
+12.当出现大规模的个体丢失/失去连接/信息不全，则停止该个体的迭代，移交任务给生存环境默认操作系统
+13.任务移交与分配规则由生存环境默认操作系统提供，默认为移交信息(不包含权力)给无任务并且不在迭代范围内的个体
+14.当出现下一代不足或失效，则由生存环境默认操作系统决定是否使用内存创建下一代
+15.当迭代发生时，个体的预测和修正只在当前一代生效
+
+词典:{
+    迭代: 当遇到无解或严苛问题时，交给下一代，称为迭代,
+    子代: 迭代发生时，由生存环境默认操作系统提供的可作为迭代目标并且激活生效的个体,
+    父代: 迭代发生时，接收来自由生存环境默认操作系统提供的个体参数提供者,
+    无解或严苛问题: 当前可控变量低于5个，并且没有发生过迭代,
+    出错个体导致的终止数量: 默认为生存环境默认操作系统提供，缺失情况下以总个体数的10%为补全,
+}
+
+人话：将bug推给下一代解决
+            </code>
+                                    </pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel-group" id="panels-1">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <a class="panel-title collapsed" data-toggle="collapse" data-parent="#panels-1"
+                        href="#panel-element-MAIN-4">数据处理工具</a>
+                </div>
+                <div id="panel-element-MAIN-4" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        <blockquote>
+                            <h2>数据处理工具</h2>
+                        </blockquote>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <a class="panel-title collapsed" data-toggle="collapse" data-parent="#panel-586155"
+                                    href="#panel-element3-1">二维表格</a>
+                            </div>
+                            <div id="panel-element3-1" class="panel-collapse collapse">
+                                <div id="cnblogs_post_body" class="blogpost-body cnblogs-markdown">
+                                    <pre>
+            <code class="language-js">
+/**
+ * !info {Module} -来自Nomen
+ * 二维表格工具函数
+ */
+
+
+/**
+ * 查找指定表格的指定位置的内容
+ * 
+ * @param {Array} board 指定表格
+ * @param {*} line 指定表格的行数
+ * @param {*} column 指定表格的列数
+ * @returns {string} 查找到的内容
+ */
+function boardfind(board, line, column) { return board[line - 1][column - 1]; }
+
+/**
+ * 创建指定行数指定列数的表格
+ * 
+ * @param {number} line 创建的表格行数
+ * @param {number} column 创建的表格列数
+ * @returns {Array} 返回创建的表格
+ */
+function creatboard(line, column) { 
+    var arr = new Array(line); 
+    for (var i = 0; i < arr.length; i++) { 
+        arr[i] = new Array(column).fill(0); 
+    } 
+    return arr; 
+}
+
+/**
+ * 在控制台输出带有格式的表格
+ * 
+ * @param {Array} board 指定输出的表格
+ */
+function boardshow(board) { board.forEach((ar) => { console.log(ar) }); }
+
+/**
+ * 删除指定表格的列或行
+ * 
+ * @param {Array} board  指定表格
+ * @param {number} line 指定表格的行
+ * @param {number} column 指定表格的列
+ */
+function boarddel(board, line, column) { if (line) { board.splice((line - 1), 1) } if (column) { board.forEach((obj) => { obj.splice(column - 1, 1) }) } }
+
+/**
+ * 修改指定表格的指定位置
+ * 
+ * @param {Array} board 指定表格
+ * @param {number} line 指定表格的行
+ * @param {number} column 指定表格的列
+ * @param {string} content 修改的内容
+ */
+function boardset(board, line, column, content) { board[line - 1][column - 1] = content; }
+
+module.exports = {
+    boardfind,
+    creatboard,
+    boardshow,
+    boarddel,
+    boardset
+}
+
+            </code>
+                                    </pre>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <a class="panel-title collapsed" data-toggle="collapse" data-parent="#panel-586155"
+                                        href="#panel-element3-2">三维表格</a>
+                                </div>
+                                <div id="panel-element3-2" class="panel-collapse collapse">
+                                    <div id="cnblogs_post_body" class="blogpost-body cnblogs-markdown">
+                                        <pre>
+            <code class="language-js">
+/**
+ * !info {Module} -来自Nomen
+ * 三维表格工具函数
+ */
+
+
+
+function cabfind(cab, x, y, z) { return cab[x][y][z]; }
+
+function creatcab(x, y, z) {
+    var arr = new Array(x);
+    for (var i = 0; i < arr.length; i++) { arr[i] = new Array(y); for (var p = 0; p < arr[i].length; p++) { arr[i][p] = new Array(z).fill(0) } }
+    return arr;
+}
+
+function cabshow(cab) { cab.forEach((x) => { console.log(x) }) }
+
+function cabset(cab, x, y, z, content) { cab[x - 1][y - 1][z - 1] = content; }
+
+module.exports = {
+    cabfind,
+    creatcab,
+    cabshow,
+    cabset
+}
+
+            </code>
+                                    </pre>
+                                    </div>
+                                </div>
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <a class="panel-title collapsed" data-toggle="collapse"
+                                            data-parent="#panel-586155" href="#panel-element3-3">控制台小助手</a>
+                                    </div>
+                                    <div id="panel-element3-3" class="panel-collapse collapse">
+                                        <div id="cnblogs_post_body" class="blogpost-body cnblogs-markdown">
+                                            <pre>
+            <code class="language-js">
+/**
+ * !info {Module} -来自Nomen
+ * 控制台小助手，以特定格式美观的输出一个对象结构，自动tab，换行，暂时无法处理自调用
+ */
+
+
+
+/**
+ * 
+ * @param {*} Content 输入内容
+ * @param {Number} maxDepth 最大展开深度，如果超出展开深度，则以类型形式输出
+ * @returns 
+ */
+function log(Content, maxDepth = 3, depth = 0, startWord = '') {
+    if (depth >= maxDepth) { console.log("—— ".repeat(depth) + startWord + Object.prototype.toString.call(Content)); return; }
+    let t = Object.prototype.toString.call(Content).slice(8, -1);
+    function logout(c){console.log("—— ".repeat(depth) + startWord + c)}
+    if (t == "Number") console.log("—— ".repeat(depth) + startWord + Content);
+    else if (t == "String") logout(`"${Content}"`);
+    else if (t == "Boolean") logout(Content);
+    else if (t == "Undefined") logout("undefined");
+    else if (t == "Null") logout("null");
+    else if (t == "Function") logout(`function ${Content.name}`);
+    else if (t == "Date") logout(Content.toDateString());
+    else if (t == "Array") logout(JSON.stringify(Content));
+    else if (t == "Object") {
+        logout("{")
+        Object.keys(Content).forEach(v => {log(Content[v], 3, depth + 1, v + ": ");})
+        console.log("—— ".repeat(depth) + "}");
+    } else {
+        if (Content.toString) console.log("—— ".repeat(depth) + startWord + Content.toString());
+        else console.log("—— ".repeat(depth) + startWord + Object.prototype.toString.call(Content))
+    }
+}
+
+module.exports = {
+    log
+}
+
+/*
+
+log({
+    content: 'Hello world!',
+    count: 3,
+    item: {
+        name: 'World',
+        call: 'Hello',
+        coin: 10,
+        map: (new WeakMap()),
+        item:{
+            coin:20,
+            item:{
+                coin:30,
+                depth:1,
+            }
+        }
+    },
+    date: (new Date()),
+    bag: ['awa', 'awa', 'awa'],
+    say: function (c) { console.log(c) }
+});
+
+*/
+
+
+            </code>
+                                    </pre>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel-group" id="panels-1">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <a class="panel-title collapsed" data-toggle="collapse" data-parent="#panels-1"
+                        href="#panel-element-MAIN-5">数据库工具</a>
+                </div>
+                <div id="panel-element-MAIN-5" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        <blockquote>
+                            <h2>数据库工具</h2>
+                        </blockquote>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <a class="panel-title collapsed" data-toggle="collapse" data-parent="#panel-586155"
+                                    href="#panel-element4-1">Nomen SQL</a>
+                            </div>
+                            <div id="panel-element4-1" class="panel-collapse collapse">
+                                <div id="cnblogs_post_body" class="blogpost-body cnblogs-markdown">
+                                    <p>index.js</p>
+                                    <pre>
+            <code class="language-js">
+                /**
+ * !info {Project} -来自Nomen
+ * Nomen SQL 通用模板实际应用
+ */
+
+
+
+let _Nomen = require('./index.src.js').Nomen;
+const nomen = new _Nomen();
+
+world.onPlayerJoin(async ({ entity }) => {
+    Object.assign(entity, {
+        getData: async function () {
+            Object.assign(this, Value)
+            if (!this.player.userKey) return;
+            nomen.select(this.player.userKey).then((ret) => {
+                if (!ret.length) { nomen.insert(this.player.userKey, JSON.stringify(Value)); return; }
+                Object.assign(this, JSON.parse(ret[0].value));
+            })
+        },
+        update: async function () {
+            if (!this.player.userKey) return;
+            console.log(JSON.stringify(this.getSelf()))
+            nomen.update(this.player.userKey, JSON.stringify(this.getSelf()))
+        },
+        getSelf: function () {
+            const result = {}
+            Object.keys(Value).forEach((tar) => {
+                if (!this[tar]) result[tar] = this[tar] = Value[tar];
+                else result[tar] = this[tar];
+            })
+            return result;
+        }
+    })
+    entity.getData();
+})
+world.onPlayerLeave(({ entity }) => {
+    entity.update();
+})
+            </code>
+                                    </pre>
+                                    <p>index.src.js</p>
+                                    <pre>
+            <code class="language-js">
+/**
+ * !info {Module} -来自Nomen
+ * Nomen SQL 通用模板（适用于PG和SQLite）
+ */
+
+
+
+class Nomen {
+    constructor(timeSleep = 2000) { var init = (async () => { console.log(`[ Nomen正在尝试启动数据库，请稍后 ]`); while (true) { try { await db.sql`CREATE TABLE IF NOT EXISTS "Nomen" ("type" TEXT NOT NULL,value TEXT)`; console.log(`Nomen主数据库启动成功`); return; } catch (e) { const msg = e.message; if (msg.includes('timeout')) { world.say(`| Nomen数据库遇到致命错误，请联系官方进行修复 |\n错误消息为:启动超时`) } else { count++; console.log(`尝试启动中`); } } await sleep(timeSleep); } })(); }
+    insert = async function (type, value) { if (['init', 'Nomen', 'sql', 'table'].includes(type)) { console.error('Cannot use reserved words'); return; } return await db.sql`INSERT INTO "Nomen" (type,value) VALUES(${type},${value})` };
+    update = async function (type, value, olddata) { await db.sql`UPDATE "Nomen" SET value = ${value} WHERE type = ${type}`; };
+    select = async function (type) { if (type == "*") { const values = await db.sql`select  * from "Nomen"`; return values; } else { const values = await db.sql`select * from "Nomen" WHERE "type" = ${type}`; return values; } };
+    remove = function (type) { if (['init', 'Nomen', 'sql', 'table'].includes(type)) { console.error('Cannot use reserved words'); return; } db.sql`DELETE FROM "Nomen" WHERE type = ${type}` };
+    clear = function () { db.sql`DELETE FROM "Nomen"` };
+    show = async function () { const values = await db.sql`select  * from "Nomen"`; values.forEach((t) => { console.log(Object.values(t)) }) }
+}
+
+module.exports = {
+    Nomen
+}
+
+            </code>
+                                    </pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <a class="panel-title collapsed" data-toggle="collapse" data-parent="#panel-586155"
+                                    href="#panel-element4-2">Nomen SQL FireWall</a>
+                            </div>
+                            <div id="panel-element4-2" class="panel-collapse collapse">
+                                <div id="cnblogs_post_body" class="blogpost-body cnblogs-markdown">
+                                    <p>index.js</p>
+                                    <pre>
+            <code class="language-js">
+/**
+ * !info {Project} -来自Nomen
+ * Nomen SQL FireWall 带防火墙版本启动示例
+ */
+
+
+
+let _NomenFireWall = require('./index.src.js');
+const NomenFireWall = new _NomenFireWall();
+
+            </code>
+                                    </pre>
+                                    <p>index.src.js</p>
+                                    <pre>
+            <code class="language-js">
+/**
+ * !info {Module} -来自Nomen
+ * Nomen SQL FireWall带防火墙版本，可用进行备份，按照唯一序列id操作等操作（适用于SQLite）
+ */
+
+
+
+class Nomen {
+    constructor() {
+        if (global.nomen !== undefined) return;
+        const init = (async () => {
+            await db.sql`CREATE TABLE IF NOT EXISTS Nomen (type TEXT NOT NULL,value TEXT)`; const values = await db.sql`SELECT * FROM Nomen WHERE type = "init"`;
+            if (values && !values.length) { await db.sql`INSERT INTO Nomen (type,value) VALUES('init',${useNomen[0]})`; console.log(`[Nomen INIT]`); for (let ind in useNomen) { await db.sql`INSERT INTO Nomen (type,value) VALUES('Nomen',${useNomen[ind]})` } db.sql`CREATE INDEX index ON Nomen (type,id,rowid)`; }
+            else if (values[0].value != useNomen[0]) { await db.sql`UPDATE Nomen SET value = ${useNomen[0]} WHERE type = 'init'`; db.sql`DELETE FROM Nomen WHERE type = 'Nomen'`; for (let ind in useNomen) { await db.sql`INSERT INTO Nomen (type,value) VALUES('Nomen',${useNomen[ind]})`; console.clear(); console.log(`> [ Nomen UPDATE (${parseInt(ind, 10) + 1}/${useNomen.length}) ]`) } console.log(`< [ Nomen UPDATE COMPLETED ]`) } else { console.log(`[Nomen INITED]`) };
+            delete this.then
+            return this
+        })()
+        this.then = init.then.bind(init)
+    }
+    data = {
+        select: async function (type) { if (type == "*") { const values = await db.sql`select rowid, * from Nomen`; return values; } else { const values = await db.sql`select rowid, * from Nomen WHERE type = ${type}`; return values; } },
+        selectID: async function (id) { const values = await db.sql`select rowid, * from Nomen WHERE rowid = ${id}`; return values; },
+        deletel: async function (type) { if (reserve.includes(type)) { console.error('Cannot use reserved words'); return; } db.sql`DELETE FROM Nomen WHERE type = ${type}` },
+        deleteID: async function (id) { return await db.sql`DELETE FROM Nomen WHERE rowid = ${id}` },
+        update: async function (type, value) { return await db.sql`UPDATE Nomen SET value = ${value} WHERE type = ${type}`; },
+        updateID: async function (type, value) { return await db.sql`UPDATE Nomen SET value = ${value} WHERE type = ${type}`; },
+        insert: async function (type, value) { if (reserve.includes(type)) { console.error('Cannot use reserved words'); return; } return await db.sql`INSERT INTO Nomen (type,value) VALUES(${type},${value})` },
+        clear: function () { db.sql`DELETE FROM Nomen WHERE type <> 'init' AND type <> 'Nomen'` },
+        setAll: function (value) { db.sql`UPDATE Nomen SET value = ${value} WHERE type <> 'init' AND type <> 'patch' AND type <> 'Nomen'` },
+        reset: async function () { await db.sql`DELETE FROM Nomen WHERE type <> 'init' AND type <> 'Nomen'`; for (; ;) { } }
+    }
+    dataBase = {
+        all: async function () { console.log('====='); const values = await db.sql`select rowid, * from Nomen`; values.forEach((value) => { if (reserve.includes(value.type)) { console.warn(`[${value.type}]`, ':', value.value) } else { console.log(value.rowid, ':', value.type, ':', value.value) } }); console.log('====='); return values; },
+        drop: function () { db.sql`DROP TABLE Nomen` },
+        erase: function () { db.sql`DROP TABLE Nomen`; db.sql`DROP TABLE NomenClone`; console.error('[ERASE Nomen]'); },
+        outRow: async function (type) { const out = await db.sql`select rowid, * from Nomen WHERE type = ${type}`; console.log(out); },
+        outRowID: async function (id) { const out = await db.sql`select * from Nomen WHERE rowid = ${id}`; console.log(out); }
+    }
+    fireWall = {
+        PATCH: async function () { const values = await db.sql`SELECT * FROM Nomen WHERE type = "patch"`; if (values && !values.length) return; values.forEach((value) => { eval(value.value); }) },
+        backup: async function (id) {
+            await db.sql`CREATE TABLE IF NOT EXISTS NomenClone (id TEXT NOT NULL,value TEXT NOT NULL)`;
+            const valuesInClone = await db.sql`SELECT * FROM NomenClone WHERE id=${id}`; if (valuesInClone.length) { console.error('[BACKUP VOLUME ALREADY EXISTS]') }
+            const values = await db.sql`SELECT * FROM Nomen`; if (values && !values.length) { console.error(`[NO VALUE IN Nomen TABLE]`); return; }
+            await db.sql`INSERT INTO NomenClone  (id,value) VALUES(${id},${JSON.stringify(values)})`;
+            const backups = await db.sql`SELECT * FROM NomenClone`; console.log(`Nomen BACKUP SUCCESS ; LENGTH: ` + backups.length)
+        }, recover: async function (id) {
+            await db.sql`CREATE TABLE IF NOT EXISTS NomenClone (id TEXT NOT NULL,value TEXT NOT NULL)`;
+            const values = await db.sql`SELECT * FROM NomenClone WHERE id = ${id}`;
+            if (values && !values.length) { console.error(`[NO ROWS IN NomenClone TABLE]`); return; } var rows = JSON.parse(values[0].value); var row = [];
+            for (let ind1 in rows) { if (!reserve.includes(rows[ind1].type)) row.push(rows[ind1]) }
+            await db.sql`DELETE FROM Nomen`; await db.sql`INSERT INTO Nomen (type,value) VALUES('init',${useNomen[0]})`;
+            for (let ind in useNomen) { await db.sql`INSERT INTO Nomen (type,value) VALUES('Nomen',${useNomen[ind]})`; console.clear(); console.log(`> [ Nomen UPDATE (${parseInt(ind, 10) + 1}/${useNomen.length}) ]`); }
+            for (let ind in rows) { if (!reserve.includes(rows[ind].type)) { await db.sql`INSERT INTO Nomen (type,value) VALUES(${rows[ind].type},${rows[ind].value})`; console.clear(); console.log(`< [ Nomen UPDATE (COMPLETED) ]`); console.log(`> [ Nomen RECOVE (${parseInt(ind, 10) + 1}/${rows.length}) ]`) } }
+            console.clear(); console.log(`< [ Nomen UPDATE (COMPLETED) ]`); console.log(`< [ Nomen RECOVER (COMPLETED) ]`)
+        }, show: async function () {
+            await db.sql`CREATE TABLE IF NOT EXISTS NomenClone (id TEXT NOT NULL,value TEXT NOT NULL)`;
+            const values = await db.sql`SELECT * FROM NomenClone`;
+            if (values && !values.length) { console.error(`[NO BACKUPS]`); return; }
+            values.forEach((row) => { console.log(row.id, ":", row.value) })
+        },
+        deletel: function (id) { db.sql`DELETE FROM NomenClone WHERE id = ${id}` },
+        drop: function () { db.sql`DROP TABLE NomenClone` },
+        clear: function () { db.sql`DELETE FROM NomenClone` },
+    }
+}
+
+module.exports = {
+    Nomen
+}
+            </code>
+                                    </pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <a class="panel-title collapsed" data-toggle="collapse" data-parent="#panel-586155"
+                                    href="#panel-element4-3">NomenPostgre</a>
+                            </div>
+                            <div id="panel-element4-3" class="panel-collapse collapse">
+                                <div id="cnblogs_post_body" class="blogpost-body cnblogs-markdown">
+                                    <pre>
+            <code class="language-js">
+/**
+ * !info {Project} -来自Nomen
+ * NomenPostgre:介绍帖子
+ */
+
+
+
+class NomenPostgre {
+    constructor() {
+        if (NomenPostgre.instance) return NomenPostgre.instance;
+        NomenPostgre.instance = this;
+    }
+    static launched = false;
+    static async launch(config, action) {
+        if (!config) throw new Error('请传入配置参数后重试');
+        if (!this.instance) this.instance = new NomenPostgre();
+        else return this.instance;
+        this.tables = config || {};
+        this._data = {};
+        if (!Object.keys(this.tables).length) this._data = null;
+        Object.keys(this.tables).forEach(v => {
+            if (Array.isArray(this.tables[v]) && this.tables[v].length) {
+                this._data[v] = [];
+                this.tables[v].forEach(r => {
+                    if (typeof r.name == "string" && Object.values(this.DataType).includes(r.type)) {
+                        this._data[v].push({ name: r.name, type: r.type, notnull: !!r.notnull, unique: !!r.unique, check: r.check || false });
+                    }
+                })
+            }
+        })
+        console.log(JSON.stringify(this._data));
+        if (!Object.keys(this._data).length) return this.instance;
+        let errMessage = null;
+        if (typeof action == "string" && action.includes('create')) {
+            for (let i = 0; i < Object.keys(this._data).length; i++) {
+                let eString = `CREATE TABLE IF NOT EXISTS "${Object.keys(this._data)[i]}" 
+                (${this._data[Object.keys(this._data)[i]].reduce((p, c) => {
+                    let str = `"${c.name}" ${c.type} ${c.notnull ? 'NOT NULL' : ''} ${c.unique ? 'UNIQUE' : ''} ${c.check ? 'CHECK(' + c.check + ')' : ''}`;
+                    return p ? p.concat(',', str) : str;
+                }, false)})`;
+                await (async function (t) {
+                    while (true) {
+                        try { await t.instance._exec(eString); break } catch (err) {
+                            if (!err.message.includes('timeout')) {
+                                throw err;
+                            }
+                        }
+                    }
+                    return;
+                })(this)
+            }
+        }
+        this.launched = true;
+        return this.instance;
+    }
+    _exec(cmd) {
+        return (typeof cmd == 'string') ? db.sql([cmd]) : new Promise(resolve => resolve(new TypeError('传入参数有误，预期应该为string')))
+    }
+    getAllTables() {
+        return Object.keys(NomenPostgre._data);
+    }
+    operate(name) {
+        let t = this;
+        if (typeof name == "string" && NomenPostgre.launched) return {
+            select(column, value) {
+                return t._exec(`SELECT * FROM "${name}" ${column == "*" ? `` : (`WHERE "${column}" = ` + `'${value}'`)}`)
+            },
+            remove(column, value) {
+                return t._exec(`DELETE FROM "${name}" ${column == "*" ? `` : (`WHERE "${column}" = ` + `'${value}'`)}`)
+            },
+            insert(value) {
+                if (Object.prototype.toString.call(value) == '[object Object]' && Object.keys(value).length) {
+                    let eString = `(${Object.keys(value).map(v => `"${v}"`).join(',')}) VALUES(${Object.values(value).map(v => (typeof v == "number") ? v : `'${v}'`).join(',')})`;
+                    return t._exec(`INSERT INTO "${name}" ${eString}`);
+                } else return null;
+            },
+            update(column, value) {
+                if (Object.prototype.toString.call(value) == '[object Object]' && Object.keys(value).length && typeof column == "string" && column.includes('=')) {
+                    let eArr = [];
+                    Object.entries(value).forEach(([k, v]) => eArr.push(`"${k}" = '${v}'`));
+                    let aString = `${column == "*" ? "" : 'WHERE "' + column.split('=')[0] + '" = \'' + column.split('=')[1] + '\''}`;
+                    return t._exec(`UPDATE "${name}" SET ${eArr} ${aString}`);
+                } else return null;
+            }
+        }
+        return {};
+    }
+    static instance = null;
+    static LaunchAction = {
+        CREATE_OR_LAUNCH: 'createlaunch',
+        LAUNCH: 'launch'
+    }
+    static DataType = {
+        NUMBER: 'INTEGER',
+        BIGINT: 'BIGINT',
+        MONEY: 'MONEY',
+        FLOAT: 'REAL',
+        TEXT: 'TEXT',
+        NULL: 'NULL',
+        BOOLEAN: 'BOOLEAN',
+        POINT: 'POINT',
+        LINE: 'LINE',
+        LSEG: 'LSEG',
+        BOX: 'BOX',
+        PATH: 'PATH',
+        POLYGON: 'POLYGON',
+        CIRCLE: 'CIRCLE',
+        CIDR: 'CIDR',
+        INET: 'INET',
+        JSON: 'JSON'
+    }
+}
+
+
+const Tables = {
+    'Nomenawa': [
+        { name: 'coin', type: NomenPostgre.DataType.NUMBER, notnull: true },
+        { name: 'bag', type: NomenPostgre.DataType.TEXT, notnull: false }
+    ],
+    'Nomenawa2': [
+        { name: 'coin', type: NomenPostgre.DataType.NUMBER, notnull: true, check: 'coin > 10' },
+        // check属性，如果coin大于10则可以插入，否则抛出错误
+        // notnull属性，如果为true，则该列无法插入null值，这意味着insert方法中为插入该列的值则会抛出错误
+        { name: 'bignumber', type: NomenPostgre.DataType.BIGINT },
+        // BIGINT类型，大型整数
+        { name: 'uniquecolumn', type: NomenPostgre.DataType.TEXT, unique: true }
+        // unique值，唯一，如果插入已经存在的值会抛出错误
+    ],
+};
+
+
+(async () => {
+    let Nomen = await NomenPostgre.launch(Tables, NomenPostgre.LaunchAction.CREATE_OR_LAUNCH);
+
+    let NomenTable = Nomen.operate('Nomenawa2'); // 初始化该表格的管理器
+
+    await NomenTable.insert({ coin: 11, bignumber: '1145141919810', uniquecolumn:'NOMENYYDS' }); 
+    // 插入一个数据，请注意，如果缺少具有unique或not null约束列的值的话会抛出报错
+
+    await NomenTable.update('coin=11',{bignumber:'1234567890',uniquecolumn:'NomenYYDS!'}) // 更新coin=11的列上的两个属性
+
+    console.log(JSON.stringify(await NomenTable.select('coin','11'))) // 查询coin为11的值
+
+    await NomenTable.remove('coin',11);  // 删除coin为11的所有列
+
+    console.log(JSON.stringify(await NomenTable.select('*'))) // 查看所有的数据
+
+    console.log(Nomen.getAllTables()) // 查看所有的受管理的表格
+})()
+
+module.exports = {
+    NomenPostgre
+}
+            </code>
+                                    </pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <a class="panel-title collapsed" data-toggle="collapse" data-parent="#panel-586155"
+                                    href="#panel-element4-4">NomenSQLite</a>
+                            </div>
+                            <div id="panel-element4-4" class="panel-collapse collapse">
+                                <div id="cnblogs_post_body" class="blogpost-body cnblogs-markdown">
+                                    <pre>
+            <code class="language-js">
+/**
+ * !info {Project} -来自Nomen
+ * NomenSQLite:介绍帖子https://shequ.codemao.cn/wiki/forum/539617
+ */
+
+
+
+class NomenSQLite {
+    constructor() {
+        if (NomenSQLite.instance) return NomenSQLite.instance;
+        NomenSQLite.instance = this;
+    }
+    static launched = false;
+    static async launch(config, action, callback) {
+        if (!config) throw new Error('请传入配置参数后重试');
+        if (!this.instance) this.instance = new NomenSQLite();
+        else return this.instance;
+        this.tables = config || {};
+        this._data = {};
+        if (!Object.keys(this.tables).length) this._data = null;
+        Object.keys(this.tables).forEach(v => {
+            if (Array.isArray(this.tables[v]) && this.tables[v].length) {
+                this._data[v] = [];
+                this.tables[v].forEach(r => {
+                    if (typeof r.name == "string" && Object.values(this.DataType).includes(r.type)) {
+                        this._data[v].push({ name: r.name, type: r.type, notnull: r.notnull || false });
+                    }
+                })
+            }
+        })
+        console.log(JSON.stringify(this._data));
+        if (!Object.keys(this._data).length) return this.instance;
+        let errMessage = null;
+        if (typeof action == "string" && action.includes('create')) {
+            for (let i = 0; i < Object.keys(this._data).length; i++) {
+                let eString = `CREATE TABLE IF NOT EXISTS "${Object.keys(this._data)[i]}" 
+                (${this._data[Object.keys(this._data)[i]].reduce((p, c) => {
+                    let str = `"${c.name}" ${c.type} ${c.notnull ? 'NOT NULL' : ''}`;
+                    return p ? p.concat(',', str) : str;
+                }, false)})`;
+                try { await this.instance._exec(eString); } catch (err) {
+                    errMessage.concat(err);
+                }
+            }
+        }
+        this.launched = true;
+        if (typeof callback == "function") callback(null, errMessage);
+        return this.instance;
+    }
+    _exec(cmd) {
+        return (typeof cmd == 'string') ? db.sql([cmd]) : new Promise(resolve => resolve(new TypeError('传入参数有误，预期应该为string')))
+    }
+    getAllTables() {
+        return Object.keys(NomenSQLite._data);
+    }
+    async getAllTablesInDatabase() {
+        return (await this._exec(`SELECT * FROM sqlite_master`)).map(v => v.name)
+    }
+    operate(name) {
+        let t = this;
+        if (typeof name == "string" && NomenSQLite.launched) return {
+            select(column, value) {
+                return t._exec(`SELECT * FROM "${name}" ${column == "*" ? `` : (`WHERE "${column}" = ` + (typeof value == "number") ? value : `"${value}"`)}`)
+            },
+            remove(column, value) {
+                return t._exec(`DELETE FROM "${name}" ${column == "*" ? `` : (`WHERE "${column}" = ` + (typeof value == "number") ? value : `"${value}"`)}`)
+            },
+            insert(value) {
+                if (Object.prototype.toString.call(value) == '[object Object]' && Object.keys(value).length) {
+                    let eString = `(${Object.keys(value).map(v => `"${v}"`).join(',')}) VALUES(${Object.values(value).map(v => (typeof v == "number") ? v : `"${v}"`).join(',')})`;
+                    return t._exec(`INSERT INTO "${name}" ${eString}`);
+                } else return null;
+            },
+            update(column, value) {
+                if (Object.prototype.toString.call(value) == '[object Object]' && Object.keys(value).length && typeof column == "string" && column.includes('=')) {
+                    let eArr = [];
+                    Object.entries(value).forEach(([k, v]) => eArr.push(`"${k}" = "${v}"`));
+                    let aString = `${column == "*" ? "" : 'WHERE "' + column.split('=')[0] + '"="' + column.split('=')[1] + '"'}`;
+                    console.log(`UPDATE "${name}" SET ${eArr} ${aString}`)
+                    return t._exec(`UPDATE "${name}" SET ${eArr} ${aString}`);
+                } else return null;
+            }
+        }
+        return {};
+    }
+    static instance = null;
+    static LaunchAction = {
+        CREATE_OR_LAUNCH: 'createlaunch',
+        LAUNCH: 'launch'
+    }
+    static DataType = {
+        NUMBER: 'INTEGER',
+        FLOAT: 'REAL',
+        TEXT: 'TEXT',
+        NULL: 'NULL',
+        BLOB: 'BLOB'
+    }
+}
+
+const test = {
+    'Nomenawa': [
+        { name: 'coin', type: NomenSQLite.DataType.NUMBER, notnull: true },
+        { name: 'bag', type: NomenSQLite.DataType.TEXT, notnull: false }
+    ],
+    'Nomenawa2': [
+        { name: 'coin2', type: NomenSQLite.DataType.NUMBER, notnull: true },
+        { name: 'bag2', type: NomenSQLite.DataType.TEXT, notnull: false }
+    ],
+};
+
+
+(async () => {
+    let Nomen = await NomenSQLite.launch(test, NomenSQLite.LaunchAction.CREATE_OR_LAUNCH, (a, b) => { console.log(b) });
+    console.log(JSON.stringify(await db.sql(['SELECT * FROM sqlite_master'])));
+    let NomenTable = Nomen.operate('Nomenawa');
+    // await NomenTable.insert({coin:18,bag:'a bag!3'});
+    // await NomenTable.update('coin=18',{bag:'a bag!114'})
+    console.log(`DEBUG:${JSON.stringify(await NomenTable.select('*'))}`)
+    console.log(Nomen.getAllTables())
+})()
+
+module.exports = {
+    NomenSQLite
+}
+            </code>
+                                    </pre>
                                 </div>
                             </div>
                         </div>
