@@ -11,174 +11,35 @@
     <link rel="icon" href="https://box3.codemao.cn/favicon.ico" type="icon">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/styles/default.min.css">
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/highlight.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/theme/dracula.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/mode/javascript/javascript.min.js"></script>
     <style>
-        #cnblogs_post_body .cnblogs_code {
-            border-radius: 4px;
-            color: #000;
-            font-family: Courier New !important;
-            font-size: 13px !important;
-            margin: 5px 0;
-            overflow: auto;
-            padding: 5px;
+        .typed-out {
+            overflow: hidden;
+            border-right: .15em solid orange;
+            white-space: nowrap;
+            animation:
+                typing 2s steps(20, end) forwards;
+            font-size: 1.6rem;
+            width: 0;
         }
 
-        .hljs-built_in,
-        .hljs-keyword,
-        .hljs-name,
-        .hljs-selector-tag,
-        .hljs-tag {
-            color: #332870 !important;
-        }
+        @keyframes typing {
+            from {
+                width: 0
+            }
 
-        .hljs-emphasis,
-        .hljs-strong {
-            color: #a8a8a2 !important;
-        }
-
-        .hljs-built_in,
-        .hljs-keyword,
-        .hljs-name,
-        .hljs-selector-tag,
-        .hljs-tag {
-            color: #bababa !important;
-        }
-
-        .hljs-bullet,
-        .hljs-link,
-        .hljs-literal,
-        .hljs-number,
-        .hljs-quote,
-        .hljs-regexp {
-            color: #27c94a !important;
-        }
-
-        .hljs-code,
-        .hljs-selector-class {
-            color: #eeff00 !important;
-        }
-
-        .hljs-emphasis {
-            font-style: italic !important;
-        }
-
-        .hljs-attribute,
-        .hljs-keyword,
-        .hljs-name,
-        .hljs-section,
-        .hljs-selector-tag,
-        .hljs-variable {
-            color: #00c3ff !important;
-        }
-
-        .hljs-attr,
-        .hljs-params {
-            color: #b9b9b9 !important;
-        }
-
-        .hljs-string {
-            color: #ffbb00 !important;
-        }
-
-        .hljs-addition,
-        .hljs-built_in,
-        .hljs-builtin-name,
-        .hljs-selector-attr,
-        .hljs-selector-id,
-        .hljs-selector-pseudo,
-        .hljs-subst,
-        .hljs-symbol,
-        .hljs-template-tag,
-        .hljs-template-variable,
-        .hljs-title,
-        .hljs-type {
-            color: #dfe231 !important;
-        }
-
-        .hljs-comment,
-        .hljs-deletion {
-            color: #008839 !important;
-        }
-
-        .hljs-meta {
-            color: #00ff0d !important;
-        }
-
-        #cnblogs_post_body .toc ul {
-            max-height: 550px;
-            overflow-y: auto;
-        }
-
-        .cnblogs-markdown .hljs {
-            display: block;
-            overflow-x: auto;
-            padding: 0.5em !important;
-            background: #2b2b2b !important;
-            font-size: 14px !important;
-            color: #bababa !important;
-            font-family: Source Code Pro, Consolas, Menlo, Monaco, Courier New,
-                monospace !important;
-        }
-
-        #cnblogs_post_body h1::before {
-            content: "H1";
-            margin-right: 10px;
-            color: gainsboro;
-        }
-
-        #cnblogs_post_body h2::before {
-            content: "H2";
-            margin-right: 10px;
-            color: gainsboro;
-        }
-
-        #cnblogs_post_body h3::before {
-            content: "H3";
-            margin-right: 10px;
-            color: gainsboro;
-        }
-
-        #mainContent #post_detail #cnblogs_post_body h4::before {
-            content: "h4";
-            margin-right: 10px;
-            color: gainsboro;
-        }
-
-        #cnblogs_post_body h5::before {
-            content: "h5";
-            margin-right: 10px;
-            color: gainsboro;
-        }
-
-        #cnblogs_post_body h6::before {
-            content: "h6";
-            margin-right: 10px;
-            color: gainsboro;
-        }
-
-        #cnblogs_post_body td.hljs-ln-numbers {
-            -webkit-touch-callout: none;
-            -webkit-user-select: none;
-            -khtml-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-            text-align: center;
-            color: #ccc;
-            border-right: 1px solid #ccc;
-            vertical-align: top;
-            padding-right: 5px;
-        }
-
-        #cnblogs_post_body .hljs td {
-            border-collapse: inherit;
-            min-width: unset;
-            padding-left: 20px;
-            padding-right: 10px;
+            to {
+                width: 100%
+            }
         }
     </style>
 </head>
 
-<body>
+<body style="height: 685px;background-image:linear-gradient(0deg,#16d9e3 0%, #30c7ec 47%, #46aef7 100%)">
     <div class="container">
         <div class="row clearfix" style="margin-bottom: 60px;">
             <div class="col-md-12 column">
@@ -186,7 +47,7 @@
                     Box3-Tools主页面
                 </h3>
                 <h4 class="text-center" style="color: #919191;">
-                    本网站界面由 <strong>烟魂</strong>和<strong>Nomen</strong>开发<br />
+                        本网站界面由 <strong>Yanhun1234-SoulCoding-Soul</strong>和<strong>Nomen</strong>开发<br />
                     <a href="https://github.com/helloyork/Box3-Tools" target="_blank">Nomen小队 Box3-Tools仓库</a>
                     </h3>
             </div>
@@ -201,25 +62,25 @@
                     let tw = Object.keys(v);
                     tw.forEach((c, i) => {
                         let twele = document.createElement('div');
-                        twele.innerHTML = `<div class="panel-group" id="panels-1">
-    <div class="panel panel-default">
-            <a class="panel-title collapsed" data-toggle="collapse" data-parent="#panels-1" style="text-decoration:none;"
-                href="#panel-element-MAIN-${i}"><div class="panel-heading" style="text-decoration:none;">${c}</div></a>
-        <div id="panel-element-MAIN-${i}" class="panel-collapse collapse">
-            <div class="panel-body">
-                <div class="row clearfix">
-                    <div class="col-md-12 column">
-                        <blockquote style="text-decoration:none;">
-                            <h2 style="text-decoration:none;">${c}</h2>
-                        </blockquote>
-                        <div class="panel-group" id="panel-586155">
+                        twele.innerHTML = `
+                        <div class="panel-group" id="panels-1">
+                            <div class="panel panel-default">
+                                <a class="panel-title collapsed" data-toggle="collapse" data-parent="#panels-1" style="text-decoration:none;"
+                                    href="#panel-element-MAIN-${i}"><div class="panel-heading" style="text-decoration:none;">${c}</div></a>
+                                <div id="panel-element-MAIN-${i}" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        <div class="row clearfix">
+                                            <div class="col-md-12 column">
+                                                <blockquote style="text-decoration:none;">
+                                                    <h2>${c}</h2>
+                                                </blockquote>
+                                            <div class="panel-group" id="panel-586155">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>`;
+                    </div>`;
                         for (let r = 0; r < v[c].length; r++) {
                             fetch(getSrcUrl(c, v[c][r]))
                                 .then(u => u.text())
@@ -232,9 +93,9 @@
                                 <div id="panel-element-${i}-${r}" class="panel-collapse collapse">
                                     <div id="cnblogs_post_body" class="blogpost-body cnblogs-markdown">
                                         <pre>
-                                        <code class="language-js">
-                                            ${hljs.highlight(u,{language:'javascript'}).value}
-                                        </code>
+                                        <div id="editor">
+                                            ${hljs.highlight(u, { language: 'javascript' }).value}
+                                        </div>
                                     </pre>
                                     </div>
                                 </div>
@@ -248,6 +109,21 @@
         </script>
         <div id="tlsbody">
         </div>
+        <script>
+            // 创建CodeMirror编辑器
+		var editor = CodeMirror(document.getElementById("editor"), {
+			value: "
+            function factorial(n) {\n    if (n === 0 || n === 1) {\n        return 1;\n    } else {\n        return n * factorial(n - 1);\n    }\n}\n\n// 调用函数并打印结果\nconsole.log(factorial(5)); // 输出：120",
+			mode: "javascript",
+			theme: "dracula",
+			lineNumbers: true,
+			indentUnit: 4,
+			smartIndent: true,
+			matchBrackets: true,
+			autofocus: true,
+			extraKeys: {"Ctrl-Space": "autocomplete"}
+		});
+        </script>
 </body>
 
 </html>
